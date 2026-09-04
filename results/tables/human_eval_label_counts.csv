@@ -1,0 +1,17 @@
+system_name,aspect,top,middle,bottom
+RAG only,grounded,5,11,4
+RAG only,helpful,0,8,12
+RAG only,hallucination,19,0,1
+RAG only,context reuse,9,8,3
+ChatGPT Auto,grounded,1,12,7
+ChatGPT Auto,helpful,11,9,0
+ChatGPT Auto,hallucination,1,12,7
+ChatGPT Auto,context reuse,10,4,6
+Gemini Fast,grounded,0,8,12
+Gemini Fast,helpful,3,16,1
+Gemini Fast,hallucination,0,7,13
+Gemini Fast,context reuse,9,1,10
+Our Agent,grounded,16,4,0
+Our Agent,helpful,14,6,0
+Our Agent,hallucination,16,4,0
+Our Agent,context reuse,19,1,0

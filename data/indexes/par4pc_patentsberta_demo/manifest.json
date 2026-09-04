@@ -1,0 +1,5 @@
+{
+  "embedding_model": "AI-Growth-Lab/PatentSBERTa",
+  "patent_count": 112,
+  "dimension": 768
+}

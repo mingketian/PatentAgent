@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 700" width="1240" height="700" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-labelledby="archTitle archDesc">
+  <title id="archTitle">Patent Prior-Art Agent architecture</title>
+  <desc id="archDesc">A shared FAISS patent index feeds two paths. The baseline RAG path retrieves top-k patents and returns a ranked list. The agent path performs coarse recall, learned reranking on dense, BM25 and field-lexical features, planner-driven working-set reuse, limitation-level evidence extraction, grounded answer generation, and answer verification.</desc>
+
+  <style>
+    .surface  { fill: #fcfcfb; }
+    .card     { fill: #ffffff; stroke: #e2e1dc; stroke-width: 1.5; }
+    .card-mut { fill: #f6f5f2; stroke: #e2e1dc; stroke-width: 1.5; }
+    .card-key { fill: #eef5fe; stroke: #2a78d6; stroke-width: 1.75; }
+    .lane-ours { fill: #f4f8fe; stroke: #d6e5f8; stroke-width: 1.5; }
+    .lane-base { fill: #f7f7f5; stroke: #e6e5e0; stroke-width: 1.5; }
+    .t-title  { fill: #0b0b0b; font-size: 22px; font-weight: 700; }
+    .t-sub    { fill: #84837c; font-size: 13px; }
+    .t-lane   { fill: #52514e; font-size: 12px; font-weight: 700; letter-spacing: 0.09em; }
+    .t-lane-o { fill: #2a78d6; font-size: 12px; font-weight: 700; letter-spacing: 0.09em; }
+    .t-node   { fill: #0b0b0b; font-size: 14px; font-weight: 600; }
+    .t-meta   { fill: #6c6b64; font-size: 11.5px; }
+    .t-mono   { fill: #52514e; font-size: 11px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .t-step   { fill: #a3a29a; font-size: 11px; font-weight: 700; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .flow     { stroke: #b6b5ad; stroke-width: 1.75; fill: none; }
+    .flow-o   { stroke: #2a78d6; stroke-width: 2; fill: none; }
+    .flow-d   { stroke: #b6b5ad; stroke-width: 1.75; fill: none; stroke-dasharray: 5 4; }
+  </style>
+
+  <defs>
+    <marker id="a-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#b6b5ad"/>
+    </marker>
+    <marker id="a-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 9 5 L 0 9 z" fill="#2a78d6"/>
+    </marker>
+  </defs>
+
+  <rect class="surface" x="0" y="0" width="1240" height="700"/>
+
+  <text class="t-title" x="32" y="42">Patent Prior-Art Agent — system architecture</text>
+  <text class="t-sub"   x="32" y="66">One shared patent index; the agent path adds learned reranking, evidence extraction and verification on top of plain RAG.</text>
+
+  <!-- ── input ────────────────────────────────────────────────── -->
+  <rect class="card" x="32" y="288" width="176" height="96" rx="10"/>
+  <text class="t-step" x="48" y="312">INPUT</text>
+  <text class="t-node" x="48" y="334">User query</text>
+  <text class="t-meta" x="48" y="353">Patent claim, invention</text>
+  <text class="t-meta" x="48" y="369">idea, or follow-up</text>
+
+  <!-- ── shared index ─────────────────────────────────────────── -->
+  <path class="flow" d="M 208 336 H 244" marker-end="url(#a-gray)"/>
+  <rect class="card-key" x="248" y="272" width="196" height="128" rx="10"/>
+  <text class="t-step" x="266" y="296">SHARED STORE</text>
+  <text class="t-node" x="266" y="318">Persistent FAISS index</text>
+  <text class="t-meta" x="266" y="338">17,877 unique patents</text>
+  <text class="t-mono" x="266" y="357">PatentSBERTa · 768-d</text>
+  <text class="t-mono" x="266" y="375">IndexFlatIP · cosine</text>
+  <text class="t-meta" x="266" y="392">index.faiss + metadata</text>
+
+  <!-- ── baseline lane ────────────────────────────────────────── -->
+  <rect class="lane-base" x="480" y="96" width="728" height="164" rx="12"/>
+  <text class="t-lane" x="500" y="122">BASELINE · NORMAL RAG</text>
+
+  <path class="flow" d="M 446 300 C 466 300 466 178 486 178" marker-end="url(#a-gray)"/>
+
+  <rect class="card-mut" x="504" y="146" width="188" height="82" rx="9"/>
+  <text class="t-node" x="520" y="176">Top-k retrieval</text>
+  <text class="t-meta" x="520" y="196">Dense cosine over the</text>
+  <text class="t-meta" x="520" y="212">whole index, no rerank</text>
+
+  <path class="flow" d="M 692 187 H 728" marker-end="url(#a-gray)"/>
+
+  <rect class="card-mut" x="732" y="146" width="188" height="82" rx="9"/>
+  <text class="t-node" x="748" y="176">Optional snippets</text>
+  <text class="t-meta" x="748" y="196">Title / abstract text,</text>
+  <text class="t-meta" x="748" y="212">no synthesis</text>
+
+  <path class="flow" d="M 920 187 H 956" marker-end="url(#a-gray)"/>
+
+  <rect class="card-mut" x="960" y="146" width="228" height="82" rx="9"/>
+  <text class="t-node" x="976" y="176">Ranked patent list</text>
+  <text class="t-meta" x="976" y="196">Human study: 0.53 grounded,</text>
+  <text class="t-meta" x="976" y="212">0.20 helpful</text>
+
+  <!-- ── agent lane ───────────────────────────────────────────── -->
+  <rect class="lane-ours" x="480" y="300" width="728" height="332" rx="12"/>
+  <text class="t-lane-o" x="500" y="326">OUR AGENT · GROUNDED PRIOR-ART ANALYSIS</text>
+
+  <path class="flow-o" d="M 446 372 C 466 372 466 396 486 396" marker-end="url(#a-blue)"/>
+
+  <!-- row 1 -->
+  <rect class="card" x="504" y="352" width="196" height="92" rx="9"/>
+  <text class="t-step" x="520" y="374">01 · PLAN</text>
+  <text class="t-node" x="520" y="396">Planner + decompose</text>
+  <text class="t-meta" x="520" y="415">Classify turn intent,</text>
+  <text class="t-meta" x="520" y="431">split claim into limitations</text>
+
+  <path class="flow-o" d="M 700 398 H 736" marker-end="url(#a-blue)"/>
+
+  <rect class="card" x="740" y="352" width="196" height="92" rx="9"/>
+  <text class="t-step" x="756" y="374">02 · RECALL</text>
+  <text class="t-node" x="756" y="396">Coarse recall</text>
+  <text class="t-meta" x="756" y="415">FAISS top 4·k candidates</text>
+  <text class="t-meta" x="756" y="431">from the shared index</text>
+
+  <path class="flow-o" d="M 936 398 H 972" marker-end="url(#a-blue)"/>
+
+  <rect class="card-key" x="976" y="352" width="212" height="92" rx="9"/>
+  <text class="t-step" x="992" y="374">03 · RERANK</text>
+  <text class="t-node" x="992" y="396">Linear patent reranker</text>
+  <text class="t-mono" x="992" y="415">dense · bm25 · field-lexical</text>
+  <text class="t-meta" x="992" y="431">logistic, trained on PAR4PC</text>
+
+  <!-- wrap down -->
+  <path class="flow-o" d="M 1082 444 V 474 H 602 V 500" marker-end="url(#a-blue)"/>
+
+  <!-- row 2 -->
+  <rect class="card" x="504" y="504" width="196" height="92" rx="9"/>
+  <text class="t-step" x="520" y="526">04 · ALIGN</text>
+  <text class="t-node" x="520" y="548">Evidence extraction</text>
+  <text class="t-meta" x="520" y="567">Best title / abstract / claim</text>
+  <text class="t-meta" x="520" y="583">snippet per limitation</text>
+
+  <path class="flow-o" d="M 700 550 H 736" marker-end="url(#a-blue)"/>
+
+  <rect class="card" x="740" y="504" width="196" height="92" rx="9"/>
+  <text class="t-step" x="756" y="526">05 · SYNTHESISE</text>
+  <text class="t-node" x="756" y="548">Grounded answer</text>
+  <text class="t-meta" x="756" y="567">Answers from evidence;</text>
+  <text class="t-meta" x="756" y="583">heuristic or LLM-backed</text>
+
+  <path class="flow-o" d="M 936 550 H 972" marker-end="url(#a-blue)"/>
+
+  <rect class="card-key" x="976" y="504" width="212" height="92" rx="9"/>
+  <text class="t-step" x="992" y="526">06 · VERIFY</text>
+  <text class="t-node" x="992" y="548">Answer verification</text>
+  <text class="t-meta" x="992" y="567">Supported / partially /</text>
+  <text class="t-meta" x="992" y="583">unsupported, with reason</text>
+
+  <!-- follow-up loop: working-set reuse -->
+  <path class="flow-d" d="M 1188 550 H 1214 V 292 H 602 V 348" marker-end="url(#a-gray)"/>
+  <rect fill="#fcfcfb" x="836" y="278" width="212" height="20"/>
+  <text class="t-meta" x="842" y="293">follow-up turn · working-set reuse</text>
+
+  <!-- ── footnote ─────────────────────────────────────────────── -->
+  <text class="t-mono" x="32" y="668">LangGraph orchestration · src/graph.py · retrieval in src/retrieval.py + src/patent_rerank.py · reranker in src/train_linear_patent_reranker.py</text>
+</svg>

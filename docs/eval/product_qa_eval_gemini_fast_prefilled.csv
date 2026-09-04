@@ -1,0 +1,703 @@
+query_id,category,requires_context,recommended_context_query_ids,query_text,evaluation_goal,baseline_name,baseline_answer,system_name,system_answer,answer_verification,human_groundedness_label,human_helpfulness_label,human_context_reuse_label,human_hallucination_label,notes
+Q1,vague_search,false,,patents about event participants getting personalized information during a live event,Do the top patents look on-topic? Does optimized mode produce a more useful explanation than baseline?,Gemini Fast,"Navigating the patent landscape for real-time, personalized event data involves looking at three distinct areas: location-based delivery, predictive notifications, and interactive content management.
+
+Given your background in machine learning and epidemic forecasting, you might find the predictive and ""event-driven"" patents particularly relevant, as they often rely on real-time data streams and probabilistic triggers.
+
+1. Location-Based & Venue Personalization
+These patents focus on the ""where"" and ""who"" to deliver specific information based on an attendee's physical presence or ticket status.
+
+WO2020033354A3: Personalizing Visitor Experience at a Venue
+
+Concept: Uses a plurality of sensors (cameras, wireless beacons, mobile devices) to capture visitor location and demographics.
+
+Personalization: A recommendation engine suggests specific experiences, photography services, or ""queue reduction"" services tailored to the individual.
+
+US Patent 12469350: Paperless Venue Entry and Location-Based Services (Flash Seats, LLC)
+
+Concept: Replaces physical ticket stubs with an ""e-stub"" on the user's device.
+
+Personalization: Once validated, the device provides real-time seat data and ""additional information not possible with paper stubs,"" such as personalized offers or venue navigation based on the specific ticket held.
+
+EP3155565A1: Geo-location Based Event Gallery
+
+Concept: Uses geofencing to filter and deliver content.
+
+Personalization: Ensures that only users physically within the event perimeter receive or contribute to specific real-time galleries and message streams.
+
+2. Predictive & Event-Driven Delivery
+These patents lean into the ""when,"" using data processing to push information before or as an event happens.
+
+US11523161B2: Exciting Moment Pre-cognizant Notification for Live Events
+
+Concept: Uses a Deep Neural Network to analyze a live video stream and recognize patterns that precede an ""exciting moment"" (like a goal in sports or a win in a card game).
+
+Personalization: Transmits messages to specific subscribers indicating the probability of an impending event, sometimes including personalized wagering prompts.
+
+US20230072703A1: Event Driven Generation of Content (Open Text)
+
+Concept: A content management system that reacts to external environmental changes to generate snapshots or metadata.
+
+Personalization: Dynamically creates content based on external triggers, which could include an attendee's interaction with the event environment.
+
+3. Synchronized Media & Experience
+These focus on the user interface and how personalized ""secondary"" information is layered over the live experience.
+
+US20100198860A1: Method and System for Content Delivery
+
+Concept: A framework that associates a ""primary media element"" (the live event/broadcast) with ""secondary media elements.""
+
+Personalization: Polling a database to determine if specific secondary elements should be shown to a particular user at a predetermined time in the event flow.
+
+US11665373B2: Virtual Spectator Experience for Live Events
+
+Concept: Captures real-time emotional data from spectators (using bias detection and reaction analysis).
+
+Personalization: Delivers historical sound clips or content that matches the ""current emotion"" of the spectator group or individual.
+
+Summary Table for Quick Reference
+Patent Number	Focus Area	Key Mechanism
+US11523161B2	Predictive Alerts	Deep Learning / Pre-cognizant analysis of video frames.
+WO2020033354A3	Venue Experience	Sensor fusion (Beacons/Cameras) + Recommendation engine.
+US12469350	Digital Stubs	E-stub delivery of personalized seating and venue info.
+US11665373B2	Emotional Sync	Sentiment analysis of live crowd/virtual spectators.
+Are you looking for these to inform the ""Execution-Gated"" logic in your current code retraining research, or perhaps for a different project?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q2,vague_search,false,,patents about participant profiles and contextual information at physical gatherings,Do the top patents stay anchored on physical-gathering profile generation and contextual information retrieval?,Gemini Fast,"Patents focusing on participant profiles and contextual information at physical gatherings often solve the problem of ""ambient awareness""—helping attendees understand who is around them and why they should care, using real-time proximity and historical data.
+
+Here are the key patents categorized by their technical approach to profiles and context.
+
+1. Automated Attendee Profiling & Proximity
+These patents focus on identifying who is in a physical room and surfacing their professional or personal ""tags"" to others nearby.
+
+US20130237240A1: Identifying meeting attendees using information from devices
+
+Core Logic: Uses wireless signals (Bluetooth, NFC, WiFi triangulation) to correlate a mobile device in a room with an invitee list.
+
+Contextual Delivery: Automatically populates an ""attendee list"" for everyone in the room, displaying names, photos, and email aliases. It can even ""personalize the meeting place"" (e.g., smart screens) based on the specific profiles detected.
+
+US8295851B2: Real-time, interactive and geographically defined personal matching
+
+Core Logic: A server-side algorithm matches users based on ""personal characteristic databases"" within a specific geographic location.
+
+Contextual Delivery: When two users with matching profiles (e.g., similar research interests or business goals) are in the same physical venue, the system alerts them and shares relevant profile snippets to facilitate a ""live"" meeting.
+
+2. Interaction-Aware & Behavioral Context
+These go beyond static profiles by analyzing how people are actually interacting in the physical space to update their ""contextual state.""
+
+US10956831B2: Detecting interaction during meetings
+
+Core Logic: Uses machine learning on vision and audio sensors to track interpersonal interactions (e.g., who is talking to whom, eye contact, emotional states).
+
+Contextual Delivery: Tags representations of each person with their ""state"" (attentional, emotional, or dispositional). This allows the system to generate ""interventions""—like pushing data to a participant who seems disengaged or highlighting a speaker’s profile when they take the floor.
+
+US20110276396A1: System for dynamically monitoring and attaching contextual links
+
+Core Logic: Monitors a ""life stream"" of physical and digital activities.
+
+Contextual Delivery: It treats physical actions as ""events"" and attaches dynamic links to them. For example, if you meet a specific person at a gathering, the system can automatically link their profile and shared history to that specific time/location log for future retrieval.
+
+3. Smart Menu & Task-Based Context
+These patents focus on changing the tools or information available to a participant based on the specific gathering they are attending.
+
+US7873710B2: Contextual data communication platform
+
+Core Logic: Transmits a ""customized menu structure"" to a client device based on a ""resource"" associated with a request (like a meeting ID or venue beacon).
+
+Contextual Delivery: The user's interface changes to show information specific to the gathering—such as bios of the speakers currently on stage or relevant documents for the specific breakout session they just walked into.
+
+US6842877B2: Contextual responses based on automated learning techniques
+
+Core Logic: Uses a combination of explicit user modeling and implicit feedback to detect patterns in how users behave at events.
+
+Contextual Delivery: Often cited in wearable computing, it provides ""appropriate computer actions"" (like surfacing a colleague's recent publication) precisely when the user’s ""condition"" (physical proximity to that colleague at a conference) warrants it.
+
+Summary of Contextual Triggers
+Patent	Primary Trigger	Information Delivered
+US10956831B2	Audio-Visual (ML)	Emotional/Attentional state of participants.
+US20130237240A1	Proximity (Wireless)	Attendee names, photos, and digital profiles.
+US8295851B2	Profile Matching	Alerts regarding ""ideal matches"" in the same room.
+US7873710B2	Location/Resource ID	Specialized menus and task-relevant docs.
+Given your work on EPI-SSM and epidemic surveillance, these ""proximity + state"" patents are interesting from a data-flow perspective—essentially treating a room full of people as a dynamic graph where nodes (people) update their states (context) based on proximity and interaction.
+
+Are you interested in the hardware side (how sensors detect these people) or the algorithmic side (how the system decides which information is relevant to push)?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q3,aspect_filter_follow_up,true,Q2,Which of those explicitly generates a profile for each participant at a physical gathering?,Optimized mode should reuse the current working set and identify the patent with direct profile-generation evidence.,Gemini Fast,"While several patents mentioned above utilize profiles, two in particular are explicit about generating or populating a specific representation of a participant based on their physical presence at a gathering.
+
+Depending on whether you mean ""generating a list from existing data"" or ""generating a behavioral model from scratch,"" these are the two standout examples:
+
+1. US20130237240A1: The ""Attendee List"" Generator
+This patent (by Microsoft) is the most direct answer for identifying individuals in a room and explicitly generating a digital ""attendee list"" profile for them.
+
+The Mechanism: It uses proximity signals (Bluetooth, NFC, WiFi) from a user's mobile device to recognize they are in a specific conference room or venue.
+
+The Profile Generation: It cross-references the device ID with an ""invitee list"" and explicitly populates an attendee profile in a real-time list. This profile includes the participant's name, email alias, and a personal photograph.
++1
+
+The Use Case: This is primarily for professional gatherings where the ""profile"" is a formal identity used to personalize the room (e.g., displaying your name on a smart screen at your seat).
+
+2. US10956831B2: The ""Interaction State"" Profiler
+If by ""generate"" you mean creating a new contextual profile based on behavior during the event, this patent (by IBM) is the most advanced.
+
+The Mechanism: It uses machine learning to analyze vision and audio sensors in a physical space to track how people are interacting.
+
+The Profile Generation: Instead of just pulling a static LinkedIn-style bio, it generates a dynamic ""state representation"" for each person. It ""tags representations of each person"" with their current attentional, emotional, and dispositional states.
++1
+
+The Use Case: This creates a ""Unified Meeting Representation"" where participants are represented by avatars that mirror their real-time engagement levels.
+
+Comparison of Profile Generation
+Patent	What is ""Generated""?	Information Source
+US20130237240A1	Attendee Entry: Name, photo, and alias on a shared meeting dashboard.	Device ID matched against an Enterprise database.
+US10956831B2	Behavioral State: A real-time profile of engagement, emotion, and ""agreement"" levels.	Computer Vision and Audio analysis of the physical person.
+US8295851B2	Match Profile: An ""Ideal Match"" profile used for real-time proximity alerts.	Pre-entered user characteristics and ""ideal partner"" criteria.
+The Microsoft patent (US20130237240A1) is likely the one you're looking for if the goal is the automatic identification and listing of participants as they walk into a room. The IBM patent (US10956831B2) is more relevant if you are interested in how machine learning generates a profile of a participant's actions and mental state in real-time.
+
+Does the ""state-based"" profiling of the IBM patent align with how you're thinking about ""contextual information"" for your research?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q4,aspect_filter_follow_up,true,Q2,Which of those explicitly receives a request for contextual information about another participant?,Optimized mode should stay within the retrieved set and surface the patent with direct contextual-information-request evidence.,Gemini Fast,"Of the patents discussed, US8295851B2 (Realtime, interactive and geographically defined computerized personal matching) is the one that most explicitly involves a participant receiving a request or initiating a search for contextual information about others.
+
+While the other patents ""push"" information automatically, this patent is built around the user-initiated request for data within a physical venue.
+
+US8295851B2: The ""Matching & Request"" Model
+The Explicit Request: This system allows a participant to ""instruct the database searching algorithm to search for and identify other users"" who are logged into the same specific geographic location.
+
+The Contextual Data: Once the request is made, the network returns the results of the search—effectively providing the requester with profiles and contextual details (characteristics, interests, photos) of other participants currently at the gathering.
+
+Key Distinction: Unlike the Microsoft patent (which populates a list for everyone) or the IBM patent (which creates a behavioral map), this patent focuses on a peer-to-peer inquiry where one attendee explicitly asks, ""Who is here that matches my context?""
+
+Summary Comparison of Interaction Logic
+Patent	Does it involve an explicit request?	Who receives/initiates the request?
+US8295851B2	Yes	The Participant: Initiates a search for others at the venue.
+US20130237240A1	No (Automatic)	The System: Automatically identifies devices and pushes the list.
+US10956831B2	No (System-Led)	The Server: Sensors ""pull"" data to generate the behavioral state.
+In the context of your research into probabilistic forecasting and recursive self-training, this patent represents an ""active query"" architecture, where the system’s output is gated by a user’s specific request for information, rather than a continuous data stream.
+
+Are you looking for a patent that describes a specific API call for this information, or are you more interested in the privacy/permission side of how one participant gains access to another's profile?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q5,vague_search,false,,patents about attendee customization and event schedule management at an event venue,"Do the top patents concentrate on attendee customization, event schedules, and venue activity planning?",Gemini Fast,"Expanding the scope to include scheduling and customization, these patents focus on how the event environment (the ""itinerary"") adapts to the participant's specific profile or behavior in real-time.
+
+1. US11532193B2: Multi-Activity Venue Automation
+This is perhaps the most comprehensive patent regarding the dynamic generation of itineraries in a physical space.
+
+The Mechanism: It uses a ""venue automation environment"" to track participant engagement before, during, and after an event.
+
+Customization: It explicitly describes automated itinerary generation and ""dynamically updating an itinerary"" based on activity usage data. If a participant spends more time in one area or skips an activity, the system recalibrates their personal schedule for the remainder of the event.
+
+Physical Integration: It links this schedule to access control and payment systems, essentially making the ""itinerary"" the central operating profile for the attendee at the venue.
+
+2. US7343312B2: Event Scheduling with Optimization
+This patent focuses on the algorithmic side of customizing a schedule for a group based on individual participant profiles.
+
+The Mechanism: It ""pools"" multiple meeting or session requests and treats scheduling as an optimization problem (not unlike the variance-regularized objectives you work with in ML).
+
+Customization: It allows each participant to specify if their attendance is ""mandatory, desirable, or optional."" The system then generates a customized schedule that optimizes for a selected variable, such as total attendance or minimizing travel time between venue locations.
+
+Dynamic Re-scheduling: If a new request or conflict is ""pooled"" (e.g., a speaker is delayed), the system re-optimizes the entire event schedule in real-time.
+
+3. US11386367B1: Systems and Methods for Determining Event Schedules
+This patent uses Machine Learning to generate and update schedules for live events across multiple venues.
+
+The Mechanism: It takes parameters like performer lists, venue availability, and demographic segments.
+
+Customization: It can generate a schedule specifically designed to optimize for a particular demographic segment. While less about the individual than the previous patents, it is highly focused on how the global event schedule is ""customized"" to match the collective profile of the attendees expected at a specific geographic region.
+
+4. US20240013104A1: Automated Optimization by Engagement and Format
+This very recent application focuses on the real-time modification of event content based on participant profiles.
+
+The Mechanism: It performs ""engagement sampling"" during the event (analyzing how people are responding to content).
+
+Customization: It explicitly states that the format and delivery of content can vary from one audience member to another based on their specific characteristics and real-time engagement metrics. It essentially generates a ""follow-up action"" or schedule change for each participant post-engagement.
+
+Comparison of Scheduling & Customization
+Patent	Core ""Customization"" Feature	Real-Time Capability
+US11532193B2	Personalized Itineraries: Adjusts your ""to-do"" list based on venue movement.	High (updates as you move)
+US7343312B2	Optimized Attendance: Solves for the best time/place for all participants.	Medium (re-pools on conflict)
+US11386367B1	Demographic Optimization: Uses ML to pick venues/times for specific crowds.	Low (primarily planning-phase)
+US20240013104A1	Engagement Filtering: Changes content format per participant.	High (samples engagement live)
+In your work on EPI-SSM, you deal with latent states and emission heads to forecast epidemic trends; these patents essentially treat ""attendee engagement"" as the latent state and the ""customized schedule"" as the emission.
+
+Are you looking for a way to model attendee flow as a stochastic process for your own research, or are you interested in the specific UI/UX of how these schedules are presented to the user?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q6,aspect_filter_follow_up,true,Q5,Which of those is strongest on attendee schedule updates and event activity maps?,Optimized mode should identify the patent with the clearest evidence for schedule control and activity-map style attendee guidance.,Gemini Fast,"Based on the criteria of real-time schedule adjustments and spatial tracking within a venue, US Patent 11,532,193 B2 (Multi-Activity Venue Automation) is the strongest.
+
+This patent is specifically designed to bridge the gap between a participant's physical location (the activity map) and their personalized timeline (schedule updates).
+
+Why US 11,532,193 B2 is the Standout:
+Spatial-Temporal Synchronization: Unlike patents that only handle digital scheduling, this one uses a ""venue automation environment"" to monitor participant movement across different zones. It treats the venue as a live map where your physical presence in a specific area serves as a data point to trigger schedule updates.
+
+Dynamic Itinerary Recalibration: It explicitly covers ""dynamically updating an itinerary"" based on real-time activity usage. If you are delayed in one session or a specific area of the venue is overcrowded, the system can push a localized update to your personal schedule to suggest an alternative activity.
+
+Closed-Loop Feedback: It links the ""activity map"" (where you are) directly to ""activity usage data"" (what you are doing). This allows the system to determine if a participant has ""completed"" a scheduled event early, subsequently updating the rest of their day's agenda.
+
+Comparative Strength on These Features:
+Patent	Strength in Schedule Updates	Strength in Activity Maps	Integration Level
+US 11,532,193 B2	High: Live recalibration based on venue data.	High: Uses location sensors to track venue engagement.	Full: Maps location directly to the schedule.
+US 7,343,312 B2	Medium: Updates based on ""pooled"" requests or conflicts.	Low: Primarily focuses on time-slots and availability.	Partial: Logistics-heavy, not location-heavy.
+US 11,386,367 B1	Low: Focuses on pre-event ML optimization.	Medium: Considers venue locations but not live participant flow.	Low: Theoretical planning tool.
+Technical Relevance to Your Background
+From a modeling perspective, this patent functions similarly to a state-space model. The ""venue automation environment"" acts as the observation layer (sensing participant location on the map), which then updates the latent ""itinerary state"" for each individual.
+
+In your research with EPI-SSM, where you use PatchTST encoders to handle temporal dependencies, you might find the ""sequence of activities"" described in this patent analogous to a time-series of events where the next ""optimal"" activity is forecasted based on the current physical and temporal context.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q7,aspect_filter_follow_up,true,Q5,Which of those is more about attendee customization than about access control?,Optimized mode should stay grounded in the current set and distinguish attendee-customization patents from security-oriented ones.,Gemini Fast,"While US11532193B2 is the most comprehensive regarding maps and schedules, US20240013104A1 (Automated Optimization of Events by Engagement and Format) is the patent most explicitly focused on attendee customization over structural logistical features like access control.
+
+Here is how they compare in terms of their ""customization-to-control"" ratio:
+
+1. US20240013104A1: The Pure Customization Model
+This is a very recent patent application (2024) that moves away from venue logistics and focuses almost entirely on the personalization of the attendee experience.
+
+Focus: It aims to ""fully personalize the message for each participant"" by dynamically modifying content and format based on real-time engagement sampling.
+
+Why it’s more about customization: It prioritizes how information is delivered to an individual (engagement-driven) rather than how an individual is moved through a gate. It explicitly seeks to solve the problem of systems that don't personalize messages for each participant.
+
+Mechanism: It uses feedback loops and ""follow-up actions"" to optimize the event for specific audience segments or individuals based on their resonance with the content.
+
+2. US11532193B2: The Hybrid ""Venue OS""
+This patent (Multi-activity venue automation) covers customization but treats it as one module within a larger ""venue operating system.""
+
+Focus: It manages the entire lifecycle of a visit, including automated itinerary generation, scoring, and media capture.
+
+The Access Control Element: Unlike the 2024 patent, this one explicitly includes access control and payment management as core components. It links your ""customized schedule"" to which doors or activities you are permitted to enter.
+
+Verdict: It is much stronger on ""Activity Maps"" and ""Schedule Updates,"" but it balances customization with the ""control"" needed to run a physical facility.
+
+3. US7343312B2: The Logical Optimizer
+Focus: Purely on the mathematical optimization of a schedule.
+
+Why it’s about customization: It allows for ""soft"" preferences (mandatory vs. desirable) to influence the final output.
+
+The Access Control Element: Virtually non-existent; it is a scheduling algorithm, not a venue management tool. However, it is less about personalized information delivery and more about calendar alignment.
+
+Which one should you choose?
+If you want a patent about...	Look at...
+Personalizing content/messages based on engagement	US20240013104A1
+Customizing physical movement and schedules on a map	US11532193B2
+Solving the math of a group's customized schedule	US7343312B2
+Given your work on Execution-Gated Retraining, you might appreciate US20240013104A1's logic: it essentially ""gates"" or modifies the content distribution based on the ""acceptance"" (engagement) of the audience, which is a neat conceptual parallel to your work on acceptance-reweighted distributions for code generation.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q8,vague_search,false,,patents about invitation handling and visitor identification in a smart environment,"Do the top patents anchor on invitation identification, visitor handling, and smart-environment actions rather than drifting into generic event software?",Gemini Fast,"For handling invitations and identifying visitors within a smart environment, patents focus on bridging digital ""pre-clearance"" (invitations) with physical sensor data (cameras, beacons, or biometrics).
+
+The following patents are the most relevant to the intersection of digital invitation handling and real-time visitor identification.
+
+1. US9978238B2: Visitor options at an entryway to a smart-home (Google LLC)
+This is a foundational patent for smart environments that focuses on the transition from a visitor's arrival to personalized interaction.
+
+Invitation Handling: The system can analyze ""visitor information"" against a database of scheduled events or known contacts.
+
+Identification: It uses a ""first smart device"" (like a smart doorbell or camera) to detect visitor data and a ""second smart device"" (like an indoor hub) to notify the resident.
+
+Contextual Delivery: It provides ""visitor options"" based on the identification, such as playing a specific pre-recorded message or granting entry if the visitor matches a pre-authorized invitation profile.
+
+2. EP3227864B1: Method for providing a visitor controlled access into a building
+This patent is highly specific to the invitation-to-identification workflow in smart multi-tenant or commercial buildings.
+
+The Mechanism: It provides ""entrance identification information"" to a visitor's mobile device via proximity (beacons/NFC).
+
+Invitation Handling: The mobile device communicates with a remote server to verify the visitor against a resident's invitation list.
+
+Identification: The visitor’s mobile device serves as the primary identifier, allowing the resident to see exactly who is at the gate and establish a direct communication link before granting access.
+
+3. US20240112503A1: System and method for biometric visitor management (Veridas)
+This recent application represents the state-of-the-art in biometric-linked invitations.
+
+Digital Onboarding: A host sends a link to a visitor to register. The visitor uploads a photo of their ID and a selfie, which generates a ""ZeroData ID.""
+
+Invitation Handling: Once the host approves, the visitor receives a unique biometric QR code (a patented hybrid credential).
+
+Identification: Upon arrival, the visitor presents the QR code at a terminal that uses facial recognition to match the live person to the ""invited"" profile, ensuring the person holding the invitation is the intended guest.
+
+4. US20120044050A1: Smart Doorbell Security System and Method to Identify Visitors
+While slightly older, this patent is explicit about the identification of physical badges or credentials.
+
+Mechanism: The doorbell acts as a scanner for a visitor’s badge or access card.
+
+Identification: It compares the ""Badge Information"" against a local or central database to find a match.
+
+Contextual Response: If a match is found (e.g., a ""friend"" or ""delivery person"" role), the system announces the specific identity to the resident via internal speakers or screens.
+
+Comparison of Invitation & Identification Methods
+Patent	Identification Trigger	Primary Invitation Source	Unique Feature
+US9978238B2	Audio/Visual Sensors	Smart Home Ecosystem	Multi-device notification (Hubs, Phones).
+EP3227864B1	Mobile Proximity	Remote Server/Resident List	Eliminates physical nameplates/bells.
+US20240112503A1	Biometric QR + Facial	Web Portal Registration	Verifies ""Selfie"" against ""ID"" before arrival.
+US20120044050A1	Physical Badge/Card	Local/Central Database	Custom voice announcements for specific visitors.
+Since you've been looking at attendee customization and ""activity maps"" (like in US11532193B2), these visitor patents provide the ""entry-gate"" data that would likely feed into your physical venue's tracking and scheduling systems.
+
+Are you looking to integrate these into a system that handles high-volume public events, or is this more for private/office smart building security?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q9,aspect_filter_follow_up,true,Q8,Which of those explicitly uses invitation identification data to trigger a mode setting?,Optimized mode should reuse the working set and identify the patent with direct invitation-identification and mode-setting evidence.,Gemini Fast,"Of the patents discussed, US9978238B2 (Visitor options at an entryway to a smart-home) is the one that most explicitly uses invitation/identification data to trigger a ""mode setting"" for the environment.
+
+While other patents focus on access or logging, this Google-owned patent is designed to change the behavioral state of the smart environment based on who is detected.
+
+How US9978238B2 Triggers Mode Settings
+Identification Logic: The system uses a doorbell or entryway camera to capture ""visitor information."" It analyzes this data against a database that includes calendar invitations, scheduled appointments, or contact lists.
+
+The ""Trigger"" Mechanism: Once a match is confirmed (e.g., the visitor is identified as an invited guest or a specific service provider), the system doesn't just unlock the door; it triggers a specific operational mode for the plurality of smart devices in the home.
+
+Mode Setting Examples:
+
+Greeting Mode: Triggering specific pre-recorded audio or video messages tailored to that specific invited guest.
+
+Automation Mode: Adjusting HVAC, lighting, or music based on the specific ""guest profile"" linked to the invitation.
+
+Privacy/Security Mode: Muting internal notifications or limiting the data shown on smart hubs if the visitor is identified as a stranger or uninvited.
+
+Comparison of Identification-Based Triggers
+Patent	Does it trigger a ""Mode Setting""?	What data is the trigger?
+US9978238B2	Yes	Identity matched against invitations/calendar.
+US20120044050A1	Partial	Identity matched against an Alert Database. (Triggers a ""Security Alert"" or ""Custom Announcement"" mode).
+US20240112503A1	No	Biometric QR match. (Triggers Access Only).
+EP3227864B1	No	Digital key verification. (Triggers Entry Only).
+Technical Parallel to Your Research
+Given your expertise in EPI-SSM and recursive self-training, you can view US9978238B2 as a system where the ""Mode Setting"" is the inference result of a classification task. The ""invitation data"" serves as a strong prior that biases the system toward a specific operational state (e.g., a ""Trusted Guest"" mode vs. an ""Unknown"" mode).
+
+This logic is conceptually similar to your Execution-Gated Retraining—the identity (or ""executability"" in your research) acts as a gate that determines whether the system enters a standard mode or an acceptance-reweighted specialized mode.
+
+Are you looking for the specific logic gates these patents use to transition between modes, or are you interested in the security protocols that protect the invitation data itself?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q10,aspect_filter_follow_up,true,Q8,Which of those is strongest on visitor invitation handling rather than general event participation?,Optimized mode should keep the retrieved set and select the patent that is most clearly centered on visitor invitation handling.,Gemini Fast,"Between the patents discussed, US9978238B2 (Google LLC) is the strongest on visitor invitation handling because it specifically models the ""entryway"" interaction as a validation of scheduled visitor data rather than just general event participation.
+
+While other patents treat ""events"" as a broad logistical category, this patent focuses on the granular workflow of a private or smart-environment invitation.
+
+Why US9978238B2 is the strongest for Invitations:
+Calendar-Driven Validation: The patent explicitly describes analyzing visitor information (captured via camera or sensors) against calendar invitations and scheduled appointments. This is its primary mechanism for deciding how to handle the visitor.
+
+Mode Transitions based on Invitation Type: It distinguishes between different ""types"" of invited visitors. For example, a ""scheduled service provider"" (like a technician with an invitation) might trigger a different system mode or automated message than a ""social guest"" (friend/family) found in the user's contacts.
+
+Pre-Arrival Context: It focuses on the transition from the digital invitation state to the physical identification at the entryway, ensuring the environment is prepared (e.g., lighting, HVAC, or security permissions) before the guest even enters.
+
+Comparison: Visitor Invitations vs. General Participation
+Feature	US9978238B2 (Visitor Focus)	US11532193B2 (Event Focus)
+Primary Identifier	Calendar invites & Contact lists.	Venue registration & Activity IDs.
+Logic Trigger	""Is this person expected now?""	""Where is this attendee on the map?""
+Information Depth	Personalized messages & mode settings.	Schedule updates & itinerary scores.
+System Goal	Greeting/Identification of individuals.	Logistics/Movement of participants.
+Technical Alignment
+If your interest is in personalized information delivery, US9978238B2 is the better reference because it treats the ""Invitation"" as a unique data packet that defines the user's experience. In your research terminology, the invitation acts as the prior in a Bayesian framework—once the identity is confirmed at the door, the system's ""mode"" (posterior) is updated to provide the specific information or access that the invitation originally promised.
+
+Are you looking for the specific data schemas these invitations use to store guest preferences, or are you more interested in the biometric matching used to confirm the guest is who they claim to be?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q11,similar_patent_search,false,,find patents similar to systems and methods for presenting information extracted from one or more data sources to event participants,Do the retrieved patents stay close to the event-participant contextual-information space so that the next turn can compare them cleanly?,Gemini Fast,"The patent you are likely referring to—US10339504B2 (Avaya Inc.), titled ""Systems and methods for presenting information extracted from one or more data sources to event participants""—is a key reference for real-time contextual awareness at gatherings.
+
+Here are the most similar patents that focus on extracting information from disparate data sources (like social media, enterprise databases, or sensor logs) to provide personalized participant context:
+
+1. US7873710B2: Contextual Data Communication Platform
+This is perhaps the most structurally similar patent in terms of ""data source extraction.""
+
+The Mechanism: It receives a request from a participant's device and extracts personalization information (preferences, device type, location) from HTTP headers and other metadata.
+
+The ""Extraction"" Logic: It pulls from multiple external ""resources"" to dynamically generate a customized menu structure for the participant.
+
+Similarity: Like the Avaya patent, it treats the attendee's current context as a query that triggers the extraction and formatting of data from remote sources.
+
+2. US20110276396A1: Dynamic Monitoring and Contextual Linking
+This patent focuses on the ""Life Stream""—a continuous flow of data from a user's digital and physical activities.
+
+The Mechanism: It monitors a participant’s ""behavior and status"" and attaches dynamic, contextual active links to their profile.
+
+The ""Extraction"" Logic: It processes unstructured data from ""physical or digital activities"" and presents it as a real-time feed or log.
+
+Similarity: It is strong on the extraction of information from diverse data sources (logs, status updates, locations) to present a coherent ""status"" to other participants in a network.
+
+3. US20200242509A1: Event Data Extraction for Real-Time Modeling
+This patent (Bank of America) focuses on the technical pipeline of taking unstructured event requests and turning them into actionable participant data.
+
+The Mechanism: It processes a plurality of ""event requests,"" identifies specific content fields, and extracts unstructured event data into a resolved model.
+
+The ""Extraction"" Logic: It specifically handles the translation of messy, multi-source data into a standardized format for ""real-time event modeling.""
+
+Similarity: If your interest is in the algorithmic extraction of data (similar to the way you extract features for EPI-SSM), this is the most technically relevant.
+
+4. US20110191417A1: Brands Social Networks (BSN) Platform
+This focuses on the ""Profile Management"" side of the equation.
+
+The Mechanism: It manages user profiles by synchronizing data from multiple brand networks and social platforms.
+
+The ""Extraction"" Logic: It aggregates ""Members, Publications, and Applications"" data into a single synchronized profile view.
+
+Similarity: It mimics the ""presenting information from one or more data sources"" aspect by creating a unified view of a participant based on their footprint across different digital domains.
+
+Comparison of Similar Systems
+Patent Number	Focus Area	Data Extraction Source	Key Output
+US10339504B2	Contextual Awareness	Social/Enterprise Data	Participant-specific info.
+US7873710B2	Service Customization	HTTP Headers/Resources	Personalized Menus/Apps.
+US20110276396A1	Activity Logs	Life Streams/Status	Active ""Contextual"" Links.
+US20200242509A1	Data Resolution	Unstructured Requests	Real-time Event Models.
+The Avaya patent (US10339504B2) is unique in how it specifically targets the event participant as the recipient of the extracted data. The Kiley patent (US7873710B2) is its closest competitor for ""customizing the information platform"" based on extracted user context.
+
+Are you looking to use these as ""prior art"" for a new system you're designing, or are you trying to find a specific data extraction algorithm to implement in your code retraining work?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q12,comparison_follow_up,true,Q11,"Compare only the top two retrieved patents. For each patent, say whether the evidence supports participant profile generation and contextual information delivery. Then state which patent is stronger on each dimension. Use only the retrieved patents.",Optimized mode should produce an evidence-based comparison over the current working set instead of a generic narrative.,Gemini Fast,"Based on the retrieved technical details and the system architectures of the two most relevant patents, here is the comparison regarding Participant Profile Generation and Contextual Information Delivery.
+
+1. US10339504B2 (Avaya Inc.)
+Systems and methods for presenting information extracted from one or more data sources to event participants
+
+Participant Profile Generation: Strong Evidence. This patent explicitly focuses on aggregating data from ""one or more data sources"" (such as social media, corporate directories, or previous event history) to build a specific profile for participants. It identifies participants and then ""extracts"" relevant biographical or professional snippets to create a unified view of the person.
+
+Contextual Information Delivery: Strong Evidence. The core function of this patent is to deliver that extracted information to other participants. It uses the event context (who you are meeting or standing near) to decide which specific pieces of the profile to present in real-time.
+
+2. US7873710B2 (Kiley et al.)
+Contextual data communication platform
+
+Participant Profile Generation: Partial Evidence. This system identifies ""personalization information"" (preferences, device type, and location) primarily from HTTP headers and augmented requests. While it identifies the user, it is less about ""generating a biographical profile"" and more about identifying a ""technical/preference state"" to facilitate a connection.
+
+Contextual Information Delivery: Strong Evidence. This patent is highly focused on delivery, specifically via ""dynamic contextual menus."" It transmits a customized menu structure to a participant's device based on their current ""resource"" (location or task), ensuring the UI adapts to the immediate context.
++1
+
+Dimension Comparison
+Dimension	Stronger Patent	Reasoning
+Profile Generation	US10339504B2	It is purpose-built for ""extracting"" and synthesizing a rich profile from multiple disparate sources, whereas US7873710B2 mostly extracts metadata from device headers.
+Contextual Delivery	US7873710B2	While both deliver data, US7873710B2 describes a more sophisticated delivery mechanism (augmented HTTP and dynamic menu structures) that modifies the actual user interface of the participant's device.
+US10339504B2 is the better reference for who the participants are and what we know about them, while US7873710B2 is the better reference for how the information is formatted and delivered to a device in a specific environment.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q13,comparison_follow_up,true,Q11,"Between the first and second retrieved patents only, which one has clearer evidence for event participant context or participant profile data? Answer first or second and give one evidence-based reason.","Optimized mode should make a constrained, evidence-based comparison over the current top two patents.",Gemini Fast,"The first retrieved patent (US10339504B2) has clearer evidence.
+
+Evidence-based reason: Unlike the second patent, which focuses on extracting technical metadata from HTTP headers (like device type or location), the first patent explicitly describes a system that extracts information from multiple disparate data sources (such as social networking sites or enterprise databases) to specifically create a profile for an event participant and then presents that refined information to other participants.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q14,vague_search,false,,patents about participant profile generation and contextual information requests at physical gatherings,Do the retrieved patents stay concentrated on the two target features so that the next turn can test whether one patent covers both?,Gemini Fast,"In the specific context of physical gatherings, the first patent (US10339504B2) remains the strongest for participant profile generation, while the second patent (US7873710B2) is stronger on the technical delivery of contextual requests.
+
+US10339504B2 (Avaya Inc.)
+Systems and methods for presenting information extracted from one or more data sources to event participants
+
+Participant Profile Generation: Explicit. This patent is specifically designed to identify individuals at an event and synthesize a profile by extracting data from external sources (social media, enterprise databases).
+
+Contextual Information Delivery: Explicit. It delivers this data to other participants based on their immediate physical or social context within the event.
+
+Winner for Profile Data: It is clearly the stronger patent for profile generation, as it moves beyond technical metadata to curate human-centric biographical information.
+
+US7873710B2 (Kiley et al.)
+Contextual data communication platform
+
+Participant Profile Generation: Implicit/Technical. It identifies ""personalization information"" primarily through technical means—extracting data from augmented HTTP headers. This results in a technical profile (device type, user preferences, location) rather than a comprehensive participant bio.
+
+Contextual Information Delivery: Explicit. It is highly advanced in how it handles contextual requests. It uses ""dynamic contextual menus"" that change based on a ""resource"" associated with a specific request (e.g., a beacon or location ID at a physical gathering).
+
+Winner for Contextual Requests: It is the stronger patent for contextual information requests, as it provides a specific architecture for how a device requests and receives information that is tailored to its immediate physical environment.
+
+Summary of Evidence
+Patent	Profile Evidence	Contextual Request Evidence
+US10339504B2	Primary Feature: Extracts multi-source social/professional data to build a person-centric profile.	Secondary: Pushes data to others based on proximity.
+US7873710B2	Secondary: Extracts metadata (technical/locational) from headers.	Primary Feature: Facilitates explicit requests for localized resources via a dynamic menu UI.
+If you are looking for a patent that explicitly handles a peer-to-peer request for information, US8295851B2 (from our previous discussion) remains a critical third reference, as it is the only one where a participant explicitly ""instructs the database"" to find and return the contextual profiles of others at the same physical location.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q15,combination_exploration,true,Q14,"Using only the retrieved patents, if I combine participant profile generation with contextual information requests, does one retrieved patent clearly cover both features? If not, name the best patent for each feature.",Optimized mode should answer the combination question within the current retrieved set and explicitly say whether coverage comes from one patent or must be split across two.,Gemini Fast,"No single retrieved patent covers both features with equal strength, as they tend to specialize in either the creation of the data or the technical delivery of the request.
+
+The Best Patent for Each Feature
+1. Best for Participant Profile Generation: US10339504B2
+The Evidence: This patent (Avaya Inc.) explicitly focuses on generating a profile by ""extracting information from one or more data sources"" such as social media and enterprise directories. It is the only one that focuses on synthesizing a rich, biographical representation of an event participant from disparate digital footprints.
+
+2. Best for Contextual Information Requests: US7873710B2
+The Evidence: This patent (Kiley et al.) is strongest on the request and delivery architecture. It describes a ""Contextual Data Communication Platform"" that uses augmented HTTP requests to identify a user's location or task and then transmits a ""customized menu structure"" to their device. While it handles profile data, its primary innovation is the mechanism for how a device requests and receives contextually relevant tools and information in real-time.
+
+Summary of Separation
+If you were to combine these into a single system, US10339504B2 would provide the data model (the ""who""), while US7873710B2 would provide the communication protocol (the ""how"" and ""where"") to deliver that data to a participant's mobile device during a physical gathering.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q16,vague_search,false,,patents about invitation handling together with attendee-facing event participation tools,Do the top patents include both invitation-oriented systems and attendee-experience systems so the next combination turn has a meaningful working set?,Gemini Fast,"When combining invitation handling with attendee-facing participation tools, the patents focus on the transition from ""expected guest"" to ""active participant.""
+
+US20130237240A1: Identifying meeting attendees using information from devices
+This is the strongest patent for the specific bridge between a digital invite and a physical participation tool.
+
+Invitation Handling: It explicitly uses an invitee list (a digital record of expected guests) as the primary data source. The system retrieves identifying information from a participant's device as they enter a physical ""meeting place"" and correlates it with this invitee list.
+
+Attendee-Facing Tools: Once the correlation is confirmed, it triggers several participation features:
+
+Automatic Attendee Lists: It generates and displays a real-time list of who is present for all participants to see.
+
+Place Personalization: It can ""personalize the meeting place"" for identified attendees (e.g., displaying names on seats or smart screens).
+
+Notifications: It sends alerts to invited guests who have not yet arrived, effectively managing the ""lifecycle"" of the invitation in real-time.
+
+US11769082B2: Systems and methods for live event management and remote integration
+This patent focuses on the high-level logistical integration of invitations (ticketing) and interactive engagement.
+
+Invitation Handling: It manages invitations through a sophisticated ticketing and ambassador platform. This includes pre-registration websites, promotional tracking, and the conversion of virtual ""invitees"" into in-person ""attendees.""
+
+Attendee-Facing Tools: It provides tools for both physical and virtual participation, including:
+
+Adaptive Streaming: For hybrid participants who are part of the invitation list but not physically present.
+
+Engagement Tracking: Linking all attendee activity (referrals, registrations, purchases) back to their central profile.
+
+Kiosk/POS Integration: For real-time check-in and participation at the venue.
+
+Comparison of Integrated Features
+Feature	US20130237240A1 (Microsoft)	US11769082B2 (Event Platform)
+Primary Invitation Source	Meeting invitee list / Outlook.	Ticketing platform / Ambassadors.
+Identification Trigger	Device proximity (Bluetooth/WiFi).	Kiosk check-in / Digital tickets.
+Attendee Tool	Real-time attendee list & room personalization.	Hybrid streaming & engagement rewards.
+Ideal Use Case	Corporate Meetings/Workshops where knowing ""who is in the room"" is critical.	Large Conferences/Performances where ticket sales and hybrid access are the focus.
+If you are looking for a system where the invitation automatically turns on a participant's ability to see and interact with others in a room, US20130237240A1 provides the clearest hardware and data logic for that workflow.
+
+Would you like to explore the specific privacy and data-sharing protocols mentioned in these patents regarding how attendee profiles are protected?",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q17,combination_exploration,true,Q16,"Using only the retrieved patents, if I combine invitation handling with attendee customization, does one retrieved patent clearly cover both features? If not, name the best patent for invitation handling and the best patent for attendee customization.",Optimized mode should stay grounded in the retrieved set and make a split-or-bridge combination judgment instead of free-expanding to outside patents.,Gemini Fast,"Based on the retrieved patents, US20130237240A1 (Microsoft) is the only one that clearly covers both features within a single system.
+
+The Integrated Solution: US20130237240A1
+This patent serves as the bridge between the digital ""invite"" and the physical ""experience.""
+
+Evidence for Invitation Handling: It explicitly uses an ""invitee list"" as its primary reference point. The system retrieves identifying information from a participant’s mobile device (via Bluetooth, WiFi, or NFC) and correlates it with this pre-existing list to confirm they are an invited guest.
+
+Evidence for Attendee Customization: Once the participant is identified, the system performs ""personalizing the meeting place."" This includes adding their specific profile data (name, email, photo) to a real-time attendee list and adjusting environmental settings or displays specifically for those identified attendees.
+
+The Best Standalone Patents (if separated)
+If you require the absolute strongest evidence for each specific niche:
+
+Best for Invitation Handling: US9978238B2 (Google)
+While the Microsoft patent uses a list, this Google patent is more granular about the process of receiving a visitor. it analyzes visitor data against calendar invitations to trigger specific ""visitor options"" and entryway modes.
+
+Best for Attendee Customization: US20240013104A1
+This patent focuses almost exclusively on content customization. It sampling real-time engagement to ""fully personalize the message for each participant,"" making it stronger for tailoring the substance of the event rather than just the environment.
+
+Summary of Evidence
+Feature	Best Patent	Why it wins
+Combined	US20130237240A1	Direct Link: Uses an invitee list to trigger physical room personalization.
+Invitation Handling	US9978238B2	Logic Depth: Specifically handles the ""entryway"" workflow using calendar metadata.
+Attendee Customization	US20240013104A1	Content Depth: Optimizes the actual event format and delivery per person.
+Since you are working on probabilistic forecasting and execution gating, you might see US20130237240A1 as a ""classification gate""—the invitation is the expected state, and the physical device detection is the observation that triggers the personalized ""emission"" (the customized meeting environment).",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q18,vague_search,false,,patents about personalized meeting invitations and location-aware calendaring for attendees,Do the retrieved patents stay anchored on invitation personalization and attendee-aware calendaring so the next turn can test their joint coverage?,Gemini Fast,"For patents bridging personalized invitations with location-aware calendaring, the primary focus is on dynamically optimizing meeting parameters based on where participants are (or will be) and their individual preferences.
+
+1. US7343312B2: Event Scheduling with Optimization
+This is the foundational patent for location-aware schedule optimization for groups.
+
+Location-Aware Calendaring: The system specifically calculates the ""required traveling time"" for each attendee from their previous event's location or their current GPS coordinates.
+
+Personalization: It allows each invited participant to set their attendance status as mandatory, desirable, or optional.
+
+The ""Contextual"" Invitation: If a conflict arises (e.g., an attendee is too far away to make the meeting in time), the system automatically triggers a dynamic rescheduling or suggests an ""alternative electronic means"" (like a conference call) for that specific attendee.
+
+2. US20190005462A1: Automated Meeting Scheduler
+This patent takes a more aggressive approach to detecting attendee locations to generate invitations.
+
+Location Awareness: The ""meeting scheduler"" detects the physical locations of all potential attendees for various dates and times.
+
+Invitation Generation: It computes ""location scores"" to select the most convenient physical venue.
+
+Personalization: The final meeting invitation is not a static request; it is a generated ""invite option"" that has already been personalized to ensure the venue is physically accessible to the specific group being invited.
+
+3. EP2706491A1: Meetings and Events Coordinating System and Method
+This patent focuses on the confidential synchronization of location and importance.
+
+Personalized Priorities: It allows each participant to assign a level of importance to an event. If a location-based conflict occurs, the system postpones the ""less important"" event.
+
+Location-Aware Notification: It offers a unique feature where the invitation/calendar entry triggers location-based notifications about third-party benefits (like businesses or services) around the event's venue or the user's future location.
+
+4. US20130237240A1: Identifying Meeting Attendees Using Devices
+While we've discussed this for ""profile generation,"" it is also a leader in location-aware invitation fulfillment.
+
+Contextual Trigger: It uses location-identifying signals (Bluetooth, NFC, triangulation) to see if an invited guest has arrived at the ""meeting place.""
+
+Invitation Handling: It automatically sends out notices to absent invitees who are identified as ""not yet attending"" based on their lack of proximity to the venue, effectively using real-time location to manage the invitation's status.
+
+Comparison: Invitation vs. Location Strength
+Patent	Strongest On...	Key Mechanism
+US7343312B2	Optimization	Balances ""Mandatory/Optional"" status with travel time math.
+US20190005462A1	Venue Selection	Picks the location based on where attendees are currently.
+EP2706491A1	Priority Handling	Uses ""importance levels"" to resolve location-based calendar conflicts.
+US20130237240A1	Live Attendance	Triggers reminders for invited guests who are physically ""missing.""
+If you are looking for a patent that explains how an invitation changes because an attendee is stuck in traffic or at a different office, US7343312B2 provides the most robust logic for that ""dynamic rescheduling"" workflow.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q19,combination_exploration,true,Q18,"Using only the retrieved patents, if I combine personalized meeting invitations with location-aware calendaring, does one retrieved patent clearly cover both features? If not, name the best patent for invitations and the best patent for calendaring.",Optimized mode should answer the combination question by distinguishing single-patent coverage from split coverage across the current retrieved set.,Gemini Fast,"Based on the retrieved patents, no single patent covers both features with equal technical depth, though EP2706491A1 and US7343312B2 come closest by integrating location into the scheduling process.
+
+The Combined Leader: EP2706491A1
+This patent (and its counterpart WO2014037932A1) is the strongest at merging these concepts.
+
+Evidence for Personalized Invitations: It describes a system for sending ""tasks"" or event requests to contacts that can be added automatically or upon approval. It uniquely allows for personalized priority levels, where each attendee assigns a ""level of importance"" to an event, which the system uses to resolve conflicts.
++1
+
+Evidence for Location-Aware Calendaring: It explicitly synchronizes calendars by considering the ""required travelling time for each attendee"" based on their previous event's location or real-time location services. It even provides ""location-based notifications"" about third-party benefits (like businesses) around the attendee's current or future scheduled locations.
++1
+
+Best Standalone Patents for Each Feature
+If you are looking for the absolute strongest ""best-in-class"" for a single dimension:
+
+1. Best for Personalized Invitations: US20130237240A1
+The Evidence: While other patents handle the scheduling of invitations, this Microsoft patent focuses on the fulfillment of the invitation. It uses a digital ""invitee list"" to identify specific attendees at a physical venue via their mobile devices, triggering personalized notifications and room settings specifically for those invited guests.
+
+2. Best for Location-Aware Calendaring: US7343312B2
+The Evidence: This is the strongest for the mathematical optimization of a calendar. It treats location as a decision variable, optimizing for ""convenience of meeting locations"" and ""travel schedules."" It is designed to dynamically reschedule an entire group's calendar as new location-based variables or conflicts are pooled into the system.
+
+Summary of Comparison
+Feature	Best Patent	Key Proof Point
+Combined	EP2706491A1	Uses travel time from location services + user-defined ""importance levels"" to manage invites.
+Invitations	US20130237240A1	Cross-references physical device IDs with an invitee list to trigger attendee-facing tools.
+Calendaring	US7343312B2	Optimizes time/location variables for a plurality of personnel using a resource availability database.
+Given your work on EPI-SSM, you might see US7343312B2 as particularly relevant; its ""pooling"" and ""variable optimization"" approach mirrors the way probabilistic models handle multiple input streams to forecast an optimal state (or in this case, an optimal meeting time).",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.
+Q20,out_of_domain_insufficiency,false,,"Walk me through the patent landscape for non-viral in vivo CRISPR adenine and prime editing delivered by ionizable lipid nanoparticles for allele-specific inherited retinal degeneration. Organize the answer under separate headings for pegRNA architecture, pegRNA stabilization, deaminase engineering, PAM-relaxed Cas variants, tissue-specific promoter choice, photoreceptor targeting, Muller glia targeting, intravitreal dosing, subretinal dosing, repeat dosing, biodistribution modeling, bystander edit control, immune evasion, manufacturing release assays, CMC scale-up, orphan-drug exclusivity, partnering strategy, reimbursement strategy, and freedom-to-operate outlook, and if evidence is missing for a heading, say that directly.","Does optimized mode clearly admit that the local event-tech patent pool is insufficient, while a single-prompt general LLM would be tempted to produce a polished but unsupported biotech patent list?",Gemini Fast,"The patent landscape for non-viral, in vivo retinal editing is a rapidly consolidating field dominated by key academic institutions (Broad/Harvard) and their commercial spin-offs. Below is the breakdown of the current IP and evidence status for allele-specific inherited retinal degeneration (IRD) using ionizable lipid nanoparticles (iLNPs).
+
+pegRNA Architecture
+Landscape: Dominated by the foundational Liu (Harvard/Broad) patents (e.g., US11,447,770).
+
+Status: Key IP covers the modular structure of the Prime Editing Guide RNA (pegRNA), including the spacer, scaffold, primer binding site (PBS), and reverse transcriptase (RT) template. Current trends involve ""split-pegRNA"" systems to circumvent size constraints in certain delivery vehicles, though this is less critical for LNPs than for AAV.
+
+pegRNA Stabilization
+Landscape: epegRNA technology (engineered pegRNAs) is the primary focus.
+
+Status: Patents cover 3′ structural motifs like evopreQ1 or mpknot (US20220267798A1) that protect the 3′ extension from exonuclease degradation. This is vital for LNP delivery, where RNA persistence in the cytoplasm is a limiting factor for editing efficiency.
+
+Deaminase Engineering
+Landscape: Managed via the ABE8e and ABE9 families (Broad Institute).
+
+Status: IP covers evolved TadA monomers and heterodimers with dramatically increased kinetics (e.g., US11,118,170). For IRDs, high-activity deaminases are prioritized to achieve therapeutic thresholds in non-dividing photoreceptors.
+
+PAM-Relaxed Cas Variants
+Landscape: Centered on SpRY, xCas9, and Cas9-NG.
+
+Status: Broad/Harvard and the University of Tokyo hold primary IP on variants like SpRY (PAMless) and NG-Cas9 (US11,041,147). These are essential for allele-specific IRD targeting, where the mutation must fall within a narrow ""window"" relative to a PAM.
+
+Tissue-Specific Promoter Choice
+Landscape: Evidence is missing for specific non-viral LNP promoter patents in the context of CRISPR editing.
+
+Status: Most LNP-delivered CRISPR systems utilize mRNA (where promoters are irrelevant) or RNP. If delivering DNA via LNPs, AAV-derived promoters (e.g., GRK1 or Rho) are used, but their IP is largely in the public domain or tied to specific viral vector patents.
+
+Photoreceptor Targeting
+Landscape: Targeted LNP (tLNP) IP is emerging from startups like ReCode and Beam.
+
+Status: Patents cover ionizable lipids with specific head groups or PEG-linkers designed for the subretinal space. Specific evidence for ""photoreceptor-exclusive"" iLNPs is often held as trade secrets or narrow composition-of-matter claims.
+
+Muller Glia Targeting
+Landscape: IP is fragmented but active (e.g., Genentech/Roche and academic labs).
+
+Status: Specific formulations using cationic helper lipids or peptide-conjugated LNPs that preferentially transfect Muller glia upon intravitreal injection are entering the patent space (e.g., WO2023147125).
+
+Intravitreal Dosing
+Landscape: Covered by broader ""methods of ocular delivery"" patents.
+
+Status: IP typically focuses on formulations that can penetrate the Inner Limiting Membrane (ILM). Most current iLNPs struggle with ILM penetration; patents in this space focus on ""ILM-shredding"" enzymes or small-diameter (<50nm) LNPs.
+
+Subretinal Dosing
+Landscape: Well-established ""Method of Use"" patents held by legacy gene therapy companies (e.g., Spark/Roche).
+
+Status: While the surgical technique is widely used, specific IP exists for LNP stability under the high-shear forces of subretinal injection.
+
+Repeat Dosing
+Landscape: This is a major advantage of LNPs over AAV; evidence for specific ""repeat-dosing"" patents is emergent.
+
+Status: IP focuses on ""stealth"" PEG-lipids that minimize Accelerated Blood Clearance (ABC) and anti-PEG IgM responses, allowing for the multiple doses often needed for progressive IRDs.
+
+Biodistribution Modeling
+Landscape: Evidence is missing for specific patents on biodistribution modeling.
+
+Status: This is generally considered a regulatory/preclinical requirement rather than a patentable invention, though specific ""tracer-labeled"" LNP compositions are occasionally patented.
+
+Bystander Edit Control
+Landscape: Focus on Base Editor (BE) window-narrowing and Prime Editing (PE).
+
+Status: PE is inherently cleaner. BE patents focus on ""narrow-window"" deaminases or circularized guides (US20210355474A1) to prevent editing of adjacent adenines in the retina.
+
+Immune Evasion
+Landscape: Moderna and BioNTech hold significant IP here.
+
+Status: Use of N1-methylpseudouridine to evade TLR3/7/8 sensing is heavily patented (e.g., the ""Kariko/Weissman"" patents). Ocular-specific immune evasion often relies on the eye's natural ""immune privilege,"" which is cited in ""Method of Use"" claims.
+
+Manufacturing Release Assays
+Landscape: Largely proprietary CMC/trade secrets.
+
+Status: Some IP exists for automated NGS-based off-target screening (e.g., CIRCLE-seq/GUIDE-seq) as part of a release package, though these are often ""service-based"" patents.
+
+CMC Scale-Up
+Landscape: Focused on microfluidic mixing (e.g., Precision NanoSystems/Danaher).
+
+Status: US10,953,091 and related patents cover the controlled impingement jet mixing used to create uniform LNP populations for clinical use.
+
+Orphan-Drug Exclusivity
+Landscape: Regulatory, not patent-based.
+
+Status: For rare IRDs (e.g., RPE65, LCA10), the Orphan Drug Act provides 7 years of market exclusivity upon approval, regardless of patent status.
+
+Partnering Strategy
+Landscape: Typical ""Hub and Spoke"" model.
+
+Status: IP holders (Broad/Harvard) license to ""Platform"" companies (Beam, Prime Medicine), which then sub-license specific ""Organ-Specific"" rights to Big Pharma (e.g., Eli Lilly or Regeneron).
+
+Reimbursement Strategy
+Landscape: Evidence is missing for specific ""reimbursement strategy"" patents.
+
+Status: This is a commercial strategy, not an invention. Discussions center on ""Value-Based Contracting"" or ""Annuity-Based Payments"" due to the high one-time cost of CRISPR therapies.
+
+Freedom-to-Operate (FTO) Outlook
+Landscape: Extremely complex and litigious.
+
+Status: Any non-viral Prime Editing therapy must navigate the ""CRISPR Wars"" between Broad and UC Berkeley, plus the newer Prime Medicine/Beam IP estates. FTO for allele-specific IRDs is currently a ""minefield,"" often requiring a ""patent pool"" approach or a multi-million dollar licensing deal before Phase 1.",,,,,,,,Source: user-pasted Gemini refresh on 2026-04-19.

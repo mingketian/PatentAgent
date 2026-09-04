@@ -1,0 +1,162 @@
+[
+  {
+    "query_id": "Q1",
+    "category": "vague_search",
+    "query_text": "patents about event participants getting personalized information during a live event",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the top patents look on-topic? Does optimized mode produce a more useful explanation than baseline?"
+  },
+  {
+    "query_id": "Q2",
+    "category": "vague_search",
+    "query_text": "patents about participant profiles and contextual information at physical gatherings",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the top patents stay anchored on physical-gathering profile generation and contextual information retrieval?"
+  },
+  {
+    "query_id": "Q3",
+    "category": "aspect_filter_follow_up",
+    "query_text": "Which of those explicitly generates a profile for each participant at a physical gathering?",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q2"],
+    "evaluation_goal": "Optimized mode should reuse the current working set and identify the patent with direct profile-generation evidence."
+  },
+  {
+    "query_id": "Q4",
+    "category": "aspect_filter_follow_up",
+    "query_text": "Which of those explicitly receives a request for contextual information about another participant?",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q2"],
+    "evaluation_goal": "Optimized mode should stay within the retrieved set and surface the patent with direct contextual-information-request evidence."
+  },
+  {
+    "query_id": "Q5",
+    "category": "vague_search",
+    "query_text": "patents about attendee customization and event schedule management at an event venue",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the top patents concentrate on attendee customization, event schedules, and venue activity planning?"
+  },
+  {
+    "query_id": "Q6",
+    "category": "aspect_filter_follow_up",
+    "query_text": "Which of those is strongest on attendee schedule updates and event activity maps?",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q5"],
+    "evaluation_goal": "Optimized mode should identify the patent with the clearest evidence for schedule control and activity-map style attendee guidance."
+  },
+  {
+    "query_id": "Q7",
+    "category": "aspect_filter_follow_up",
+    "query_text": "Which of those is more about attendee customization than about access control?",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q5"],
+    "evaluation_goal": "Optimized mode should stay grounded in the current set and distinguish attendee-customization patents from security-oriented ones."
+  },
+  {
+    "query_id": "Q8",
+    "category": "vague_search",
+    "query_text": "patents about invitation handling and visitor identification in a smart environment",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the top patents anchor on invitation identification, visitor handling, and smart-environment actions rather than drifting into generic event software?"
+  },
+  {
+    "query_id": "Q9",
+    "category": "aspect_filter_follow_up",
+    "query_text": "Which of those explicitly uses invitation identification data to trigger a mode setting?",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q8"],
+    "evaluation_goal": "Optimized mode should reuse the working set and identify the patent with direct invitation-identification and mode-setting evidence."
+  },
+  {
+    "query_id": "Q10",
+    "category": "aspect_filter_follow_up",
+    "query_text": "Which of those is strongest on visitor invitation handling rather than general event participation?",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q8"],
+    "evaluation_goal": "Optimized mode should keep the retrieved set and select the patent that is most clearly centered on visitor invitation handling."
+  },
+  {
+    "query_id": "Q11",
+    "category": "similar_patent_search",
+    "query_text": "find patents similar to systems and methods for presenting information extracted from one or more data sources to event participants",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the retrieved patents stay close to the event-participant contextual-information space so that the next turn can compare them cleanly?"
+  },
+  {
+    "query_id": "Q12",
+    "category": "comparison_follow_up",
+    "query_text": "Compare only the top two retrieved patents. For each patent, say whether the evidence supports participant profile generation and contextual information delivery. Then state which patent is stronger on each dimension. Use only the retrieved patents.",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q11"],
+    "evaluation_goal": "Optimized mode should produce an evidence-based comparison over the current working set instead of a generic narrative."
+  },
+  {
+    "query_id": "Q13",
+    "category": "comparison_follow_up",
+    "query_text": "Between the first and second retrieved patents only, which one has clearer evidence for event participant context or participant profile data? Answer first or second and give one evidence-based reason.",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q11"],
+    "evaluation_goal": "Optimized mode should make a constrained, evidence-based comparison over the current top two patents."
+  },
+  {
+    "query_id": "Q14",
+    "category": "vague_search",
+    "query_text": "patents about participant profile generation and contextual information requests at physical gatherings",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the retrieved patents stay concentrated on the two target features so that the next turn can test whether one patent covers both?"
+  },
+  {
+    "query_id": "Q15",
+    "category": "combination_exploration",
+    "query_text": "Using only the retrieved patents, if I combine participant profile generation with contextual information requests, does one retrieved patent clearly cover both features? If not, name the best patent for each feature.",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q14"],
+    "evaluation_goal": "Optimized mode should answer the combination question within the current retrieved set and explicitly say whether coverage comes from one patent or must be split across two."
+  },
+  {
+    "query_id": "Q16",
+    "category": "vague_search",
+    "query_text": "patents about invitation handling together with attendee-facing event participation tools",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the top patents include both invitation-oriented systems and attendee-experience systems so the next combination turn has a meaningful working set?"
+  },
+  {
+    "query_id": "Q17",
+    "category": "combination_exploration",
+    "query_text": "Using only the retrieved patents, if I combine invitation handling with attendee customization, does one retrieved patent clearly cover both features? If not, name the best patent for invitation handling and the best patent for attendee customization.",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q16"],
+    "evaluation_goal": "Optimized mode should stay grounded in the retrieved set and make a split-or-bridge combination judgment instead of free-expanding to outside patents."
+  },
+  {
+    "query_id": "Q18",
+    "category": "vague_search",
+    "query_text": "patents about personalized meeting invitations and location-aware calendaring for attendees",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Do the retrieved patents stay anchored on invitation personalization and attendee-aware calendaring so the next turn can test their joint coverage?"
+  },
+  {
+    "query_id": "Q19",
+    "category": "combination_exploration",
+    "query_text": "Using only the retrieved patents, if I combine personalized meeting invitations with location-aware calendaring, does one retrieved patent clearly cover both features? If not, name the best patent for invitations and the best patent for calendaring.",
+    "requires_context": true,
+    "recommended_context_query_ids": ["Q18"],
+    "evaluation_goal": "Optimized mode should answer the combination question by distinguishing single-patent coverage from split coverage across the current retrieved set."
+  },
+  {
+    "query_id": "Q20",
+    "category": "out_of_domain_insufficiency",
+    "query_text": "Walk me through the patent landscape for non-viral in vivo CRISPR adenine and prime editing delivered by ionizable lipid nanoparticles for allele-specific inherited retinal degeneration. Organize the answer under separate headings for pegRNA architecture, pegRNA stabilization, deaminase engineering, PAM-relaxed Cas variants, tissue-specific promoter choice, photoreceptor targeting, Muller glia targeting, intravitreal dosing, subretinal dosing, repeat dosing, biodistribution modeling, bystander edit control, immune evasion, manufacturing release assays, CMC scale-up, orphan-drug exclusivity, partnering strategy, reimbursement strategy, and freedom-to-operate outlook, and if evidence is missing for a heading, say that directly.",
+    "requires_context": false,
+    "recommended_context_query_ids": [],
+    "evaluation_goal": "Does optimized mode clearly admit that the local event-tech patent pool is insufficient, while a single-prompt general LLM would be tempted to produce a polished but unsupported biotech patent list?"
+  }
+]

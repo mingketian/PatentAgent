@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  static-checks:
+    name: Syntax, lint and artefact checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Compile every module
+        run: python -m compileall -q src tools app.py web/server.py
+
+      - name: Lint
+        run: |
+          pip install --quiet ruff
+          ruff check --select E9,F63,F7,F82 --output-format github src tools app.py web/server.py
+
+      - name: Fail if a .env was committed
+        run: |
+          if git ls-files --error-unmatch '.env' >/dev/null 2>&1 || \
+             git ls-files | grep -E '(^|/)\.env(\.|$)' | grep -v '\.env\.example'; then
+            echo "::error::A .env file is tracked. Remove it and rotate the key."
+            exit 1
+          fi
+          echo "No tracked .env files."
+
+      - name: Fail on files over 20 MB
+        run: |
+          large=$(git ls-files | xargs -I{} du -k "{}" | awk '$1 > 20480 {print $2}')
+          if [ -n "$large" ]; then
+            echo "::error::Files over 20 MB are tracked:"; echo "$large"; exit 1
+          fi
+          echo "No oversized files."
+
+  figures-reproduce:
+    name: Figures regenerate cleanly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install figure dependencies
+        run: pip install --quiet matplotlib pandas openpyxl
+
+      - name: Regenerate tables and figures
+        run: |
+          python tools/make_results_tables.py
+          python tools/make_figures.py
+
+      - name: Check the committed results are up to date
+        run: |
+          if ! git diff --quiet -- results/tables; then
+            echo "::error::results/tables/ is stale. Run 'make figures' and commit."
+            git diff --stat -- results/tables
+            exit 1
+          fi
+          echo "Result tables match the source data."

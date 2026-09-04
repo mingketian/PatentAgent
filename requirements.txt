@@ -1,0 +1,17 @@
+datasets
+faiss-cpu
+huggingface_hub
+langchain
+langchain-openai
+langgraph
+numpy
+pandas
+pydantic
+pyarrow
+python-dotenv
+rank-bm25
+scikit-learn
+sentence-transformers
+streamlit
+torchvision
+tqdm

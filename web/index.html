@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en" :class="dark && 'dark'" x-data="app()" x-init="init()" x-cloak>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patent Prior-Art Agent</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%23a855f7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='2' y='2' width='28' height='28' rx='8' fill='url(%23g)'/%3E%3Crect x='8' y='9' width='14' height='2.5' rx='1.25' fill='white' fill-opacity='0.45'/%3E%3Crect x='8' y='14.75' width='16' height='2.5' rx='1.25' fill='white'/%3E%3Crect x='8' y='20.5' width='11' height='2.5' rx='1.25' fill='white' fill-opacity='0.45'/%3E%3Ccircle cx='25' cy='9' r='1.75' fill='white'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc',
+              400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
+              800: '#3730a3', 900: '#312e81', 950: '#1e1b4b',
+            },
+            ink: {
+              50: '#fafafa', 100: '#f4f4f5', 200: '#e4e4e7', 300: '#d4d4d8',
+              400: '#a1a1aa', 500: '#71717a', 600: '#52525b', 700: '#3f3f46',
+              800: '#27272a', 900: '#18181b', 950: '#09090b',
+            },
+          },
+          fontFamily: {
+            body: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+          },
+          boxShadow: {
+            soft: '0 1px 2px 0 rgba(0,0,0,0.04), 0 1px 3px 0 rgba(0,0,0,0.06)',
+            lift: '0 10px 30px -10px rgba(99,102,241,0.18), 0 4px 12px -4px rgba(0,0,0,0.06)',
+            glow: '0 0 0 1px rgba(99,102,241,0.1), 0 8px 40px -8px rgba(99,102,241,0.4)',
+            'glow-lg': '0 0 0 1px rgba(99,102,241,0.15), 0 20px 60px -10px rgba(99,102,241,0.45)',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out both',
+            'slide-up': 'slideUp 0.7s cubic-bezier(0.16,1,0.3,1) both',
+            'scale-in': 'scaleIn 0.4s cubic-bezier(0.16,1,0.3,1) both',
+            'pulse-soft': 'pulseSoft 2s ease-in-out infinite',
+            'shimmer': 'shimmer 2.5s linear infinite',
+            'orbit': 'orbit 20s linear infinite',
+            'gradient-x': 'gradientX 8s ease infinite',
+            'float-slow': 'floatSlow 12s ease-in-out infinite',
+            'float-medium': 'floatMed 9s ease-in-out infinite',
+            'logo-glow': 'logoGlow 3s ease-in-out infinite',
+            'arrow-flow': 'arrowFlow 1.8s ease-in-out infinite',
+          },
+          keyframes: {
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            slideUp: { '0%': { opacity: '0', transform: 'translateY(16px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+            scaleIn: { '0%': { opacity: '0', transform: 'scale(0.94)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+            pulseSoft: { '0%,100%': { opacity: '1' }, '50%': { opacity: '0.55' } },
+            shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+            orbit: { '0%': { transform: 'rotate(0)' }, '100%': { transform: 'rotate(360deg)' } },
+            gradientX: { '0%,100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+            floatSlow: { '0%,100%': { transform: 'translate(0,0) scale(1)' }, '50%': { transform: 'translate(20px,-30px) scale(1.06)' } },
+            floatMed: { '0%,100%': { transform: 'translate(0,0) scale(1)' }, '50%': { transform: 'translate(-25px,20px) scale(0.95)' } },
+            logoGlow: { '0%,100%': { filter: 'drop-shadow(0 0 0 rgba(99,102,241,0))' }, '50%': { filter: 'drop-shadow(0 0 12px rgba(168,85,247,0.55))' } },
+            arrowFlow: { '0%,100%': { opacity: '0.3', transform: 'translateX(0)' }, '50%': { opacity: '1', transform: 'translateX(3px)' } },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    .mesh-light { background-color: #fafafa; background-image: radial-gradient(at 8% 12%, rgba(99,102,241,0.15) 0px, transparent 55%), radial-gradient(at 92% 18%, rgba(168,85,247,0.13) 0px, transparent 55%), radial-gradient(at 18% 88%, rgba(56,189,248,0.10) 0px, transparent 50%), radial-gradient(at 80% 92%, rgba(236,72,153,0.10) 0px, transparent 50%); }
+    .mesh-dark { background-color: #09090b; background-image: radial-gradient(at 8% 12%, rgba(99,102,241,0.22) 0px, transparent 55%), radial-gradient(at 92% 18%, rgba(168,85,247,0.20) 0px, transparent 55%), radial-gradient(at 18% 88%, rgba(56,189,248,0.13) 0px, transparent 50%), radial-gradient(at 80% 92%, rgba(236,72,153,0.13) 0px, transparent 50%); }
+    .hero-mesh { background-color: #0b0a1a; background-image: radial-gradient(at 12% 22%, rgba(99,102,241,0.55) 0px, transparent 50%), radial-gradient(at 88% 12%, rgba(168,85,247,0.50) 0px, transparent 50%), radial-gradient(at 65% 78%, rgba(236,72,153,0.40) 0px, transparent 55%), radial-gradient(at 25% 90%, rgba(56,189,248,0.35) 0px, transparent 55%); }
+    .grain { position: relative; overflow: hidden; }
+    .grain::after { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: 0.4; mix-blend-mode: overlay; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E"); }
+    .scrollbar::-webkit-scrollbar { width: 8px; height: 8px; }
+    .scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .scrollbar::-webkit-scrollbar-thumb { background: rgba(113,113,122,0.3); border-radius: 999px; }
+    .scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(113,113,122,0.5); }
+    .scrollbar-thin::-webkit-scrollbar { height: 6px; width: 6px; }
+    .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(113,113,122,0.25); border-radius: 999px; }
+    .glass-light { background-color: rgba(255,255,255,0.72); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+    .dark .glass-light { background-color: rgba(9,9,11,0.72); }
+    .shimmer-bg { background: linear-gradient(90deg, rgba(99,102,241,0) 0%, rgba(99,102,241,0.4) 50%, rgba(99,102,241,0) 100%); background-size: 200% 100%; }
+    .gradient-text-anim { background: linear-gradient(90deg, #c4b5fd, #f0abfc, #a5b4fc, #c4b5fd); background-size: 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: gradientX 6s ease infinite; }
+    .delay-0 { animation-delay: 0ms; } .delay-1 { animation-delay: 80ms; } .delay-2 { animation-delay: 160ms; } .delay-3 { animation-delay: 240ms; } .delay-4 { animation-delay: 320ms; } .delay-5 { animation-delay: 400ms; }
+    .tilt { transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease; transform-style: preserve-3d; }
+    .tilt:hover { transform: perspective(900px) rotateX(2deg) rotateY(-3deg) translateY(-3px); }
+    .lift { transition: transform 0.25s cubic-bezier(0.16,1,0.3,1), box-shadow 0.25s ease; }
+    .lift:hover { transform: translateY(-2px); }
+    .typing-dot { animation: typingPulse 1.4s ease-in-out infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingPulse { 0%,80%,100% { opacity: 0.3; transform: scale(0.85); } 40% { opacity: 1; transform: scale(1); } }
+    .msg-in { animation: msgIn 0.4s cubic-bezier(0.16,1,0.3,1); }
+    @keyframes msgIn { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }
+    .stage-active { background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(168,85,247,0.12)); border-color: rgba(99,102,241,0.4) !important; }
+    .stage-done { background: linear-gradient(135deg, rgba(16,185,129,0.08), rgba(16,185,129,0.05)); border-color: rgba(16,185,129,0.3) !important; }
+    .chip-mono { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 2px 6px; border-radius: 4px; background: rgba(99,102,241,0.08); color: #4f46e5; border: 1px solid rgba(99,102,241,0.18); }
+    .dark .chip-mono { background: rgba(99,102,241,0.15); color: #a5b4fc; border-color: rgba(99,102,241,0.3); }
+    .score-ring { transform: rotate(-90deg); }
+    .focus-ring:focus-visible { outline: none; box-shadow: 0 0 0 2px white, 0 0 0 4px #6366f1; }
+    .dark .focus-ring:focus-visible { box-shadow: 0 0 0 2px #09090b, 0 0 0 4px #6366f1; }
+  </style>
+</head>
+<body class="min-h-screen bg-ink-50 dark:bg-ink-950 text-ink-900 dark:text-ink-100 transition-colors duration-300 font-body">
+
+<header class="sticky top-0 z-40 border-b border-ink-200/70 dark:border-ink-800/60 glass-light">
+  <div class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
+    <a href="#" @click.prevent="page='landing'" class="flex items-center gap-2.5 group focus-ring rounded-lg">
+      <svg class="w-9 h-9 animate-logo-glow transition-transform duration-300 group-hover:rotate-3 group-hover:scale-110" viewBox="0 0 32 32" fill="none">
+        <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="0.55" stop-color="#8b5cf6"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs>
+        <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#logoGrad)"/>
+        <rect x="8" y="9" width="14" height="2.5" rx="1.25" fill="white" fill-opacity="0.45"/>
+        <rect x="8" y="14.75" width="16" height="2.5" rx="1.25" fill="white"/>
+        <rect x="8" y="20.5" width="11" height="2.5" rx="1.25" fill="white" fill-opacity="0.45"/>
+        <circle cx="25" cy="9" r="3" fill="white" fill-opacity="0.25"/>
+        <circle cx="25" cy="9" r="1.75" fill="white"/>
+      </svg>
+      <div class="flex items-baseline gap-1 leading-none">
+        <span class="font-display text-[17px] font-extrabold tracking-tight bg-gradient-to-br from-brand-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">Patent</span>
+        <span class="font-display text-[17px] font-medium tracking-tight text-ink-900 dark:text-white">Agent</span>
+      </div>
+    </a>
+    <nav class="hidden md:flex items-center gap-0.5 p-1 bg-ink-100/80 dark:bg-ink-900/80 rounded-xl border border-ink-200/60 dark:border-ink-800/60">
+      <button @click="page='landing'" :class="page==='landing' ? 'bg-white dark:bg-ink-800 shadow-soft text-ink-900 dark:text-white' : 'text-ink-600 dark:text-ink-400 hover:text-ink-900 dark:hover:text-white'" class="px-4 py-1.5 rounded-lg text-[13px] font-semibold transition-all focus-ring">Home</button>
+      <button @click="page='search'" :class="page==='search' ? 'bg-white dark:bg-ink-800 shadow-soft text-ink-900 dark:text-white' : 'text-ink-600 dark:text-ink-400 hover:text-ink-900 dark:hover:text-white'" class="px-4 py-1.5 rounded-lg text-[13px] font-semibold transition-all focus-ring">Patent Search</button>
+      <button @click="page='benchmark'" :class="page==='benchmark' ? 'bg-white dark:bg-ink-800 shadow-soft text-ink-900 dark:text-white' : 'text-ink-600 dark:text-ink-400 hover:text-ink-900 dark:hover:text-white'" class="px-4 py-1.5 rounded-lg text-[13px] font-semibold transition-all focus-ring">Benchmark</button>
+    </nav>
+    <div class="flex items-center gap-2">
+      <div class="hidden xl:flex items-center gap-1.5">
+        <span :class="status.openai_available ? 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-900/50' : 'bg-ink-100 dark:bg-ink-900 text-ink-500 border-ink-200/70 dark:border-ink-800/60'" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono font-medium border transition">
+          <span :class="status.openai_available ? 'bg-emerald-500 animate-pulse-soft' : 'bg-ink-400'" class="w-1.5 h-1.5 rounded-full"></span>
+          <span x-text="status.openai_available ? 'GPT online' : 'GPT offline'"></span>
+        </span>
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono font-medium bg-ink-100 dark:bg-ink-900 text-ink-600 dark:text-ink-400 border border-ink-200/70 dark:border-ink-800/60">
+          <span x-text="formatCount(status.patent_count)"></span>
+        </span>
+      </div>
+      <button @click="dark = !dark" :title="dark ? 'Switch to light' : 'Switch to dark'" class="w-9 h-9 inline-flex items-center justify-center rounded-lg border border-ink-200/80 dark:border-ink-800/80 bg-white dark:bg-ink-900 hover:bg-ink-50 dark:hover:bg-ink-800 transition focus-ring">
+        <svg x-show="!dark" class="w-4 h-4 text-ink-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
+        <svg x-show="dark" class="w-4 h-4 text-amber-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<template x-if="page==='landing'">
+<main>
+  <section class="relative overflow-hidden grain text-white min-h-[600px]" x-init="$nextTick(() => initPlexus($el))" style="background-color:#070612; background-image: radial-gradient(ellipse 55% 60% at 50% 45%, rgba(168,85,247,0.65), transparent 70%), radial-gradient(ellipse 40% 45% at 50% 55%, rgba(236,72,153,0.40), transparent 75%), radial-gradient(ellipse 35% 40% at 50% 35%, rgba(99,102,241,0.55), transparent 75%);">
+    <canvas id="plexus-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 30%, rgba(7,6,18,0.55) 75%, rgba(7,6,18,0.95) 100%);"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-ink-950/60 pointer-events-none"></div>
+    <div class="relative max-w-6xl mx-auto px-6 pt-24 pb-32 md:pt-32 md:pb-40 text-center">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-sm mb-9 animate-fade-in">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse-soft"></span>
+        <span class="text-[12px] font-mono tracking-wide text-white/85">Live · GPT-4o-mini grounded · PatentSBERTa retrieval</span>
+      </div>
+      <h1 class="font-display text-4xl md:text-6xl lg:text-[64px] font-extrabold leading-[1.05] tracking-tight mb-7 animate-slide-up">
+        Patent Prior-Art,<br/>
+        <span class="gradient-text-anim">rediscovered.</span>
+      </h1>
+      <p class="text-lg md:text-xl text-white/75 max-w-2xl mx-auto leading-relaxed mb-12 animate-slide-up delay-1">An intelligent agent that retrieves, reranks, extracts evidence, and verifies answers — all in a single conversational interface.</p>
+      <div class="flex flex-wrap justify-center gap-3 animate-slide-up delay-2">
+        <button @click="page='search'" class="lift group relative inline-flex items-center gap-2 px-7 py-3.5 bg-white text-ink-900 font-semibold rounded-xl shadow-glow-lg text-[14px] overflow-hidden">
+          <span class="absolute inset-0 bg-gradient-to-r from-transparent via-brand-500/15 to-transparent shimmer-bg animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity"></span>
+          <svg class="relative w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+          <span class="relative">Start Patent Search</span>
+          <svg class="relative w-3.5 h-3.5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+        </button>
+        <button @click="page='benchmark'" class="lift inline-flex items-center gap-2 px-7 py-3.5 bg-white/8 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/15 hover:border-white/35 transition text-[14px] backdrop-blur">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+          View Benchmark
+        </button>
+      </div>
+      <div class="mt-14 flex flex-wrap justify-center gap-x-10 gap-y-3 text-[12.5px] text-white/65 font-medium animate-fade-in delay-3">
+        <div class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>6-stage verification pipeline</div>
+        <div class="flex items-center gap-2"><svg class="w-4 h-4 text-violet-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>Multi-turn conversation</div>
+        <div class="flex items-center gap-2"><svg class="w-4 h-4 text-sky-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/></svg>Side-by-side baseline comparison</div>
+      </div>
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto animate-slide-up delay-4">
+        <div class="rounded-xl bg-white/5 border border-white/10 backdrop-blur px-4 py-3.5 text-left lift"><div class="font-mono text-[10px] tracking-wider text-white/50 uppercase">Indexed</div><div class="font-display text-2xl font-bold mt-1.5" x-text="formatCount(status.patent_count) || '17.9K patents'"></div></div>
+        <div class="rounded-xl bg-white/5 border border-white/10 backdrop-blur px-4 py-3.5 text-left lift" x-data="counter(0.91, 1200)"><div class="font-mono text-[10px] tracking-wider text-white/50 uppercase">Hit@3</div><div class="font-display text-2xl font-bold mt-1.5" x-text="value.toFixed(2)"></div></div>
+        <div class="rounded-xl bg-white/5 border border-white/10 backdrop-blur px-4 py-3.5 text-left lift" x-data="counter(0.85, 1200)"><div class="font-mono text-[10px] tracking-wider text-white/50 uppercase">Recall@3</div><div class="font-display text-2xl font-bold mt-1.5" x-text="value.toFixed(2)"></div></div>
+        <div class="rounded-xl bg-white/5 border border-white/10 backdrop-blur px-4 py-3.5 text-left lift" x-data="counter(6, 800)"><div class="font-mono text-[10px] tracking-wider text-white/50 uppercase">Stages</div><div class="font-display text-2xl font-bold mt-1.5" x-text="Math.round(value)"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative bg-white dark:bg-ink-950 py-20 md:py-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-14">
+        <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-brand-600 dark:text-brand-400 font-semibold">Architecture</span>
+        <h2 class="font-display text-3xl md:text-5xl font-bold mt-3 tracking-tight">Six stages, one answer.</h2>
+        <p class="mt-4 text-ink-500 dark:text-ink-400 max-w-2xl mx-auto leading-relaxed">Hover any stage. Each layer is what separates this from a single-shot LLM or keyword search.</p>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-6 gap-3">
+        <template x-for="(s, i) in pipeline" :key="i">
+          <div class="lift tilt group relative p-5 rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-lift transition-all cursor-default overflow-hidden animate-slide-up" :style="'animation-delay:'+(i*70)+'ms'">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-500" :class="s.bar"></div>
+            <div class="absolute -bottom-12 -right-12 w-32 h-32 rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-2xl bg-gradient-to-br" :class="s.bar"></div>
+            <div class="relative">
+              <div class="font-mono text-[10px] tracking-wider text-ink-400 dark:text-ink-500 mb-2">STAGE 0<span x-text="i+1"></span></div>
+              <div class="text-2xl mb-2 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6 origin-bottom-left" x-text="s.icon"></div>
+              <div class="font-display font-bold text-[15px] tracking-tight text-ink-900 dark:text-white" x-text="s.title"></div>
+              <div class="text-[12px] text-ink-500 dark:text-ink-400 mt-1.5 leading-relaxed" x-text="s.desc"></div>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="mt-12 flex items-center justify-center gap-2 text-[11px] font-mono text-ink-500 dark:text-ink-400 flex-wrap">
+        <template x-for="(label, idx) in ['query','retrieve','rerank','plan','ground','verify']" :key="label">
+          <div class="flex items-center gap-2">
+            <span class="chip-mono" x-text="label"></span>
+            <template x-if="idx < 5"><svg class="w-3 h-3 animate-arrow-flow" :style="'animation-delay:'+(idx*200)+'ms'" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></template>
+          </div>
+        </template>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-ink-50 dark:bg-ink-900/40 py-20 md:py-28">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-brand-600 dark:text-brand-400 font-semibold">Validated</span>
+        <h2 class="font-display text-3xl md:text-5xl font-bold mt-3 tracking-tight">Beyond keyword search.</h2>
+        <p class="mt-4 text-ink-500 dark:text-ink-400 max-w-2xl mx-auto leading-relaxed">Numbers from PANORAMA's PAR4PC validation set (100 cases). Our learned reranker beats the PatentSBERTa baseline across every metric.</p>
+      </div>
+      <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950 overflow-hidden shadow-soft">
+        <table class="w-full text-sm">
+          <thead><tr class="border-b border-ink-200 dark:border-ink-800 bg-ink-50/60 dark:bg-ink-900/60">
+            <th class="text-left font-mono text-[11px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-semibold py-3 px-5">Method</th>
+            <th class="text-right font-mono text-[11px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-semibold py-3 px-4">Hit@1</th>
+            <th class="text-right font-mono text-[11px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-semibold py-3 px-4">Hit@3</th>
+            <th class="text-right font-mono text-[11px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-semibold py-3 px-4">Recall@3</th>
+            <th class="text-right font-mono text-[11px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-semibold py-3 px-5">Exact</th>
+          </tr></thead>
+          <tbody class="font-mono text-[13px]">
+            <tr class="border-b border-ink-100 dark:border-ink-800/70">
+              <td class="py-4 px-5 font-body"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-ink-400"></span><span class="font-semibold">PatentSBERTa baseline</span></div><div class="text-[11px] text-ink-500 dark:text-ink-400 ml-4 mt-0.5 font-mono">local-embedding</div></td>
+              <td class="text-right py-4 px-4">0.590</td><td class="text-right py-4 px-4">0.860</td><td class="text-right py-4 px-4">0.802</td><td class="text-right py-4 px-5">0.470</td>
+            </tr>
+            <tr class="bg-brand-50/50 dark:bg-brand-950/20">
+              <td class="py-4 px-5 font-body"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-gradient-to-br from-brand-500 to-violet-500"></span><span class="font-semibold text-brand-700 dark:text-brand-300">Linear patent reranker</span><span class="chip-mono">ours</span></div><div class="text-[11px] text-ink-500 dark:text-ink-400 ml-4 mt-0.5 font-mono">dense + bm25 + field-lexical</div></td>
+              <td class="text-right py-4 px-4 font-bold text-brand-700 dark:text-brand-300">0.600 <span class="text-emerald-600 dark:text-emerald-400 text-[10px]">+1.7%</span></td>
+              <td class="text-right py-4 px-4 font-bold text-brand-700 dark:text-brand-300">0.910 <span class="text-emerald-600 dark:text-emerald-400 text-[10px]">+5.8%</span></td>
+              <td class="text-right py-4 px-4 font-bold text-brand-700 dark:text-brand-300">0.850 <span class="text-emerald-600 dark:text-emerald-400 text-[10px]">+6.0%</span></td>
+              <td class="text-right py-4 px-5 font-bold text-brand-700 dark:text-brand-300">0.510 <span class="text-emerald-600 dark:text-emerald-400 text-[10px]">+8.5%</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-center text-[12px] text-ink-400 dark:text-ink-500 mt-4 font-mono">PANORAMA PAR4PC · 100 validation cases · trained on 200 training rows</p>
+    </div>
+  </section>
+
+  <section class="bg-white dark:bg-ink-950 py-20 md:py-28">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="relative overflow-hidden rounded-3xl hero-mesh grain px-8 py-16 md:px-14 md:py-20 text-center text-white">
+        <div class="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-ink-950/40"></div>
+        <div class="relative">
+          <h2 class="font-display text-3xl md:text-5xl font-bold mb-4 tracking-tight">Ready to explore?</h2>
+          <p class="text-white/75 max-w-xl mx-auto mb-8 leading-relaxed">Try a vague search, chain a follow-up, or stress-test the agent with an out-of-domain question. It will tell you when it doesn't know.</p>
+          <button @click="page='search'" class="lift inline-flex items-center gap-2 px-7 py-3.5 bg-white text-brand-700 font-semibold rounded-xl shadow-glow-lg text-[14px]">Open the agent <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-ink-950 text-ink-400 py-10 text-center text-[12px] font-mono tracking-wide">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3">
+      <div>Patent Prior-Art Agent</div>
+      <div class="text-ink-500">PatentSBERTa · GPT-4o-mini · PANORAMA PAR4PC · FAISS</div>
+    </div>
+  </footer>
+</main>
+</template>
+
+<template x-if="page==='search'">
+<main class="h-[calc(100vh-4rem)] flex overflow-hidden">
+  <section class="flex-1 flex flex-col min-w-0 bg-white dark:bg-ink-950">
+    <div class="border-b border-ink-200/70 dark:border-ink-800/60 px-4 md:px-6 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-0.5 p-1 bg-ink-100 dark:bg-ink-900 rounded-xl border border-ink-200 dark:border-ink-800">
+        <button @click="switchMode('optimized')" :class="searchMode==='optimized' ? 'bg-white dark:bg-ink-800 shadow-soft text-ink-900 dark:text-white' : 'text-ink-500 dark:text-ink-400 hover:text-ink-900 dark:hover:text-white'" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition focus-ring"><span class="w-1.5 h-1.5 rounded-full" :class="searchMode==='optimized'?'bg-gradient-to-br from-brand-500 to-violet-500':'bg-ink-300'"></span>Our Agent</button>
+        <button @click="switchMode('comparison')" :class="searchMode==='comparison' ? 'bg-white dark:bg-ink-800 shadow-soft text-ink-900 dark:text-white' : 'text-ink-500 dark:text-ink-400 hover:text-ink-900 dark:hover:text-white'" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition focus-ring"><span class="w-1.5 h-1.5 rounded-full" :class="searchMode==='comparison'?'bg-violet-500':'bg-ink-300'"></span>Side-by-side</button>
+        <button @click="switchMode('baseline')" :class="searchMode==='baseline' ? 'bg-white dark:bg-ink-800 shadow-soft text-ink-900 dark:text-white' : 'text-ink-500 dark:text-ink-400 hover:text-ink-900 dark:hover:text-white'" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold transition focus-ring"><span class="w-1.5 h-1.5 rounded-full" :class="searchMode==='baseline'?'bg-ink-500':'bg-ink-300'"></span>Baseline</button>
+      </div>
+      <div class="flex items-center gap-2">
+        <button @click="useLLM = !useLLM" :title="useLLM ? 'LLM enabled' : 'LLM disabled'" :class="useLLM ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400' : 'bg-ink-50 dark:bg-ink-900 border-ink-200 dark:border-ink-800 text-ink-500'" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[11px] font-mono font-semibold transition focus-ring">
+          <span class="w-1.5 h-1.5 rounded-full" :class="useLLM ? 'bg-emerald-500 animate-pulse-soft' : 'bg-ink-300'"></span>
+          <span x-text="useLLM ? 'GPT' : 'GPT off'"></span>
+        </button>
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900">
+          <label class="text-[10px] font-mono uppercase tracking-wider text-ink-400">Top</label>
+          <select x-model.number="topK" class="text-[12px] font-mono font-bold bg-transparent border-0 outline-none cursor-pointer text-ink-900 dark:text-white"><option value="3">3</option><option value="5">5</option><option value="8">8</option></select>
+        </div>
+        <button @click="pipelineOpen = !pipelineOpen" :class="pipelineOpen ? 'bg-brand-50 dark:bg-brand-950/40 border-brand-300 dark:border-brand-800 text-brand-700 dark:text-brand-300' : 'bg-white dark:bg-ink-900 border-ink-200 dark:border-ink-800 text-ink-500'" class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-[11px] font-mono font-semibold transition focus-ring" :title="pipelineOpen ? 'Hide trace' : 'Show trace'"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/></svg>Trace</button>
+        <button @click="resetChat()" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-500 hover:text-ink-900 dark:hover:text-white text-[11px] font-mono font-semibold transition focus-ring" title="Clear"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Clear</button>
+      </div>
+    </div>
+
+    <div x-ref="chatScroll" class="flex-1 overflow-y-auto scrollbar px-4 md:px-8 py-6">
+      <div class="max-w-4xl mx-auto">
+        <template x-if="messages.length===0">
+          <div class="py-8 md:py-14 animate-fade-in">
+            <div class="text-center mb-12">
+              <div class="relative inline-flex items-center justify-center mb-6">
+                <div class="absolute inset-0 bg-gradient-to-br from-brand-500/30 to-violet-500/30 blur-3xl rounded-full"></div>
+                <div class="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-violet-600 flex items-center justify-center shadow-glow"><svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg></div>
+              </div>
+              <h2 class="font-display text-3xl md:text-4xl font-bold tracking-tight mb-3">How can I help you search?</h2>
+              <p class="text-ink-500 dark:text-ink-400 max-w-xl mx-auto text-[15px] leading-relaxed">Enter a patent claim, invention description, or natural-language query. Pick any example below to see what the agent can handle.</p>
+            </div>
+            <template x-for="group in exampleGroups" :key="group.name">
+              <div class="mb-7">
+                <div class="flex items-center gap-2 mb-2.5"><span class="font-mono text-[10px] tracking-[0.18em] uppercase font-semibold text-ink-500 dark:text-ink-400" x-text="group.name"></span><div class="flex-1 h-px bg-ink-200/60 dark:bg-ink-800/60"></div></div>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  <template x-for="ex in group.items" :key="ex.label">
+                    <button @click="inputText = ex.query; $nextTick(() => document.querySelector('input[type=text]')?.focus())" class="lift group relative text-left p-4 bg-white dark:bg-ink-900 border border-ink-200 dark:border-ink-800 rounded-xl hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-lift transition overflow-hidden focus-ring">
+                      <div class="absolute top-0 left-0 w-1 h-full transition-all group-hover:w-1.5" :class="ex.accent"></div>
+                      <div class="pl-1.5">
+                        <div class="flex items-center justify-between mb-2"><span class="inline-flex items-center text-[10px] font-bold uppercase tracking-[0.1em] px-2 py-0.5 rounded" :class="ex.chipClass" x-text="ex.label"></span><span class="text-[9px] font-mono text-ink-300 dark:text-ink-600" x-text="ex.tag"></span></div>
+                        <p class="text-[12.5px] text-ink-600 dark:text-ink-400 leading-relaxed group-hover:text-ink-900 dark:group-hover:text-ink-200 transition line-clamp-3" x-text="ex.preview"></p>
+                      </div>
+                    </button>
+                  </template>
+                </div>
+              </div>
+            </template>
+            <div class="mt-8 px-4 py-3 bg-gradient-to-r from-brand-50 via-violet-50 to-brand-50 dark:from-brand-950/30 dark:via-violet-950/30 dark:to-brand-950/30 border border-brand-200/40 dark:border-brand-900/40 rounded-xl flex items-start gap-3">
+              <svg class="w-4 h-4 text-brand-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"/></svg>
+              <p class="text-[12px] text-ink-600 dark:text-ink-300 leading-relaxed"><span class="font-semibold">Tip:</span> follow-ups reuse the working set — try a vague search first, then ask <span class="chip-mono">"compare the top two"</span> or <span class="chip-mono">"which covers access control?"</span></p>
+            </div>
+          </div>
+        </template>
+
+        <div class="space-y-5">
+          <template x-for="(msg, idx) in messages" :key="idx">
+            <div class="msg-in" :class="msg.role==='user' ? 'flex justify-end' : ''">
+              <template x-if="msg.role==='user'"><div class="max-w-2xl"><div class="bg-gradient-to-br from-brand-500 to-brand-600 text-white px-5 py-3 rounded-2xl rounded-br-md text-[14px] leading-relaxed shadow-lift" x-text="msg.content"></div></div></template>
+              <template x-if="msg.role==='assistant'">
+                <div class="max-w-4xl w-full">
+                  <div class="flex gap-3">
+                    <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 via-brand-600 to-violet-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-lift"><svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg></div>
+                    <div class="flex-1 min-w-0 space-y-3">
+                      <template x-if="msg.data">
+                        <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 shadow-soft overflow-hidden">
+                          <div class="px-5 py-4">
+                            <div class="flex items-center gap-2 mb-3">
+                              <span :class="msg.data.pipeline==='optimized' ? 'bg-gradient-to-br from-brand-500 to-violet-500 text-white' : 'bg-ink-200 dark:bg-ink-800 text-ink-700 dark:text-ink-300'" class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase"><span x-text="msg.data.pipeline==='optimized' ? 'Our Agent' : 'Baseline'"></span></span>
+                              <template x-if="msg.data.plan"><span class="chip-mono" x-text="'plan: '+msg.data.plan.action"></span></template>
+                              <template x-if="msg.data.verification"><span :class="{'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-900/50': msg.data.verification.status==='supported','bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-900/50': msg.data.verification.status==='partially_supported','bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200/70 dark:border-rose-900/50': msg.data.verification.status==='unsupported'}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] font-mono font-bold tracking-wider uppercase"><svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd"/></svg><span x-text="msg.data.verification.status==='supported' ? 'Verified' : msg.data.verification.status==='partially_supported' ? 'Partial' : 'Unsupported'"></span></span></template>
+                            </div>
+                            <div class="text-[14px] text-ink-800 dark:text-ink-200 leading-relaxed whitespace-pre-line" x-text="msg.content"></div>
+                            <template x-if="msg.data.verification?.reason"><div class="mt-3 pt-3 border-t border-ink-100 dark:border-ink-800/70 text-[11.5px] text-ink-500 dark:text-ink-400 leading-relaxed flex items-start gap-2"><svg class="w-3.5 h-3.5 text-ink-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"/></svg><span x-text="msg.data.verification.reason"></span></div></template>
+                          </div>
+                          <div class="border-t border-ink-100 dark:border-ink-800/70 bg-ink-50/40 dark:bg-ink-950/40 px-5 py-2.5 flex items-center justify-between">
+                            <button @click="msg._showRanked = !msg._showRanked" class="inline-flex items-center gap-1.5 text-[11px] font-mono font-semibold text-ink-600 dark:text-ink-400 hover:text-brand-600 dark:hover:text-brand-400 transition"><svg class="w-3 h-3 transition-transform" :class="msg._showRanked && 'rotate-90'" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg><span x-text="(msg.data.ranked?.length || 0) + ' patents'"></span></button>
+                            <button @click="msg._showEvidence = !msg._showEvidence" class="inline-flex items-center gap-1.5 text-[11px] font-mono font-semibold text-ink-600 dark:text-ink-400 hover:text-brand-600 dark:hover:text-brand-400 transition" x-show="msg.data.snippets?.length"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg><span x-text="(msg.data.snippets?.length || 0) + ' evidence'"></span></button>
+                          </div>
+                          <template x-if="msg._showRanked && msg.data.ranked?.length">
+                            <div class="border-t border-ink-100 dark:border-ink-800/70 px-5 py-4 space-y-2">
+                              <template x-for="(r, ri) in msg.data.ranked" :key="ri">
+                                <div class="flex items-start gap-3 p-3 rounded-lg border border-ink-200/60 dark:border-ink-800/60 bg-white dark:bg-ink-900 hover:border-brand-300/60 dark:hover:border-brand-700/60 transition">
+                                  <div class="flex-shrink-0 relative w-10 h-10"><svg class="w-full h-full score-ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" stroke-width="2.5" class="text-ink-200 dark:text-ink-800"/><circle cx="18" cy="18" r="15" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" :stroke-dasharray="(94.25 * Math.min(1, Math.abs(r.score))) + ' 94.25'"/></svg><div class="absolute inset-0 flex items-center justify-center font-mono text-[10px] font-bold text-ink-700 dark:text-ink-300">#<span x-text="r.rank"></span></div></div>
+                                  <div class="flex-1 min-w-0"><div class="font-mono text-[12px] font-bold text-brand-700 dark:text-brand-300 truncate" x-text="r.patent_id"></div><div class="text-[12.5px] text-ink-700 dark:text-ink-300 mt-0.5 line-clamp-2 leading-snug" x-text="r.title || '(untitled)'"></div></div>
+                                  <div class="text-right flex-shrink-0 font-mono"><div class="text-[10px] text-ink-400 uppercase tracking-wider">score</div><div class="text-[12px] font-bold text-ink-900 dark:text-white" x-text="r.score?.toFixed(3)"></div></div>
+                                </div>
+                              </template>
+                            </div>
+                          </template>
+                          <template x-if="msg._showEvidence && msg.data.snippets?.length">
+                            <div class="border-t border-ink-100 dark:border-ink-800/70 px-5 py-4 space-y-2">
+                              <template x-for="(s, si) in msg.data.snippets" :key="si"><div class="p-3 rounded-lg border border-ink-200/60 dark:border-ink-800/60 bg-amber-50/30 dark:bg-amber-950/10"><div class="flex items-center justify-between gap-2 mb-1.5"><span class="font-mono text-[11px] font-bold text-brand-700 dark:text-brand-300" x-text="s.patent_id"></span><span class="chip-mono" x-text="s.source"></span></div><p class="text-[12px] text-ink-700 dark:text-ink-300 leading-relaxed" x-text="s.evidence"></p></div></template>
+                            </div>
+                          </template>
+                        </div>
+                      </template>
+                      <template x-if="msg._comparison">
+                        <div class="grid md:grid-cols-2 gap-3">
+                          <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 shadow-soft overflow-hidden">
+                            <div class="px-4 py-3 border-b border-ink-100 dark:border-ink-800 bg-ink-50/50 dark:bg-ink-950/40 flex items-center gap-2"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase bg-ink-200 dark:bg-ink-800 text-ink-700 dark:text-ink-300">Baseline</span><span class="text-[11px] text-ink-500 font-mono">retrieve only</span></div>
+                            <div class="p-4">
+                              <div class="space-y-1.5"><template x-for="(r, ri) in msg._comparison.baseline.ranked.slice(0,5)" :key="'bl'+ri"><div class="flex items-center gap-2.5 text-[12px]"><span class="font-mono w-5 text-[10px] text-ink-400" x-text="'#'+r.rank"></span><span class="font-mono font-bold text-brand-700 dark:text-brand-300 truncate flex-1" x-text="r.patent_id"></span><span class="font-mono text-[10px] text-ink-500" x-text="r.score?.toFixed(2)"></span></div></template></div>
+                              <p class="mt-3 pt-3 border-t border-ink-100 dark:border-ink-800/60 text-[11.5px] text-ink-500 dark:text-ink-400 leading-relaxed">No reranking, no planner, no answer synthesis. Direct vector search baseline.</p>
+                            </div>
+                          </div>
+                          <div class="rounded-2xl border-2 border-brand-300/50 dark:border-brand-700/40 bg-white dark:bg-ink-900 shadow-glow overflow-hidden">
+                            <div class="px-4 py-3 border-b border-brand-100 dark:border-brand-900/40 bg-gradient-to-r from-brand-50 to-violet-50 dark:from-brand-950/30 dark:to-violet-950/30 flex items-center gap-2"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase bg-gradient-to-br from-brand-500 to-violet-500 text-white">Our Agent</span><template x-if="msg._comparison.optimized.verification"><span :class="{'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400': msg._comparison.optimized.verification.status==='supported','bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400': msg._comparison.optimized.verification.status==='partially_supported','bg-rose-100 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400': msg._comparison.optimized.verification.status==='unsupported'}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider uppercase" x-text="msg._comparison.optimized.verification.status==='supported'?'Verified': msg._comparison.optimized.verification.status==='partially_supported'?'Partial':'Unsupported'"></span></template></div>
+                            <div class="p-4">
+                              <div class="space-y-1.5 mb-3"><template x-for="(r, ri) in msg._comparison.optimized.ranked.slice(0,5)" :key="'op'+ri"><div class="flex items-center gap-2.5 text-[12px]"><span class="font-mono w-5 text-[10px] text-ink-400" x-text="'#'+r.rank"></span><span class="font-mono font-bold text-brand-700 dark:text-brand-300 truncate flex-1" x-text="r.patent_id"></span><span class="font-mono text-[10px] text-ink-500" x-text="r.score?.toFixed(2)"></span></div></template></div>
+                              <div class="pt-3 border-t border-ink-100 dark:border-ink-800/60"><div class="font-mono text-[10px] tracking-wider uppercase text-ink-400 mb-1.5">Grounded answer</div><p class="text-[12px] text-ink-700 dark:text-ink-300 leading-relaxed whitespace-pre-line" x-text="msg._comparison.optimized.answer"></p></div>
+                            </div>
+                          </div>
+                        </div>
+                      </template>
+                      <template x-if="!msg.data && !msg._comparison"><div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 px-5 py-3 text-[14px] text-ink-700 dark:text-ink-300 leading-relaxed" x-text="msg.content"></div></template>
+                      <template x-if="msg.data?.warnings?.length"><div class="space-y-1"><template x-for="(w, wi) in msg.data.warnings" :key="wi"><div class="flex items-start gap-2 px-3 py-2 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200/70 dark:border-amber-900/40 text-[11.5px] text-amber-800 dark:text-amber-300"><svg class="w-3.5 h-3.5 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/></svg><span x-text="w"></span></div></template></div></template>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+
+          <template x-if="loading">
+            <div class="msg-in flex gap-3 max-w-4xl">
+              <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-500 via-brand-600 to-violet-600 flex items-center justify-center flex-shrink-0 mt-1 shadow-lift"><svg class="w-4 h-4 text-white animate-orbit" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg></div>
+              <div class="flex-1 rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 p-5 shadow-soft">
+                <div class="flex items-center gap-2 mb-4"><div class="flex gap-1"><div class="w-1.5 h-1.5 bg-brand-500 rounded-full typing-dot"></div><div class="w-1.5 h-1.5 bg-brand-500 rounded-full typing-dot"></div><div class="w-1.5 h-1.5 bg-brand-500 rounded-full typing-dot"></div></div><span class="font-mono text-[11px] font-semibold tracking-wider uppercase text-ink-700 dark:text-ink-300" x-text="loadingStage"></span></div>
+                <div class="space-y-1.5"><template x-for="(s, si) in pipeline" :key="si"><div class="flex items-center gap-2.5 text-[11px]"><div :class="si <= loadingStageIdx ? 'bg-brand-500' : 'bg-ink-200 dark:bg-ink-700'" class="w-1 h-1 rounded-full transition-all"></div><div :class="si === loadingStageIdx ? 'text-ink-900 dark:text-white font-semibold' : si < loadingStageIdx ? 'text-emerald-600 dark:text-emerald-400' : 'text-ink-400'" class="font-mono tracking-wider uppercase transition" x-text="s.title"></div><div class="flex-1 h-px" :class="si <= loadingStageIdx ? 'bg-gradient-to-r from-brand-300 to-transparent' : 'bg-ink-100 dark:bg-ink-800'"></div></div></template></div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-ink-200/70 dark:border-ink-800/60 bg-white/90 dark:bg-ink-950/90 glass-light px-4 md:px-6 py-3.5">
+      <div class="max-w-4xl mx-auto">
+        <div x-show="messages.length > 0" class="mb-2.5 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-thin">
+          <span class="text-[10px] font-mono font-bold uppercase tracking-[0.18em] text-ink-400 flex-shrink-0">Try</span>
+          <template x-for="ex in examples" :key="'pill-'+ex.label">
+            <button @click="inputText = ex.query; $nextTick(() => document.querySelector('input[type=text]')?.focus())" :title="ex.preview" class="group flex-shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 hover:border-brand-300 dark:hover:border-brand-700 hover:shadow-sm transition text-[11px] font-semibold focus-ring"><span class="w-1.5 h-1.5 rounded-full" :class="ex.accent"></span><span class="text-ink-700 dark:text-ink-300 group-hover:text-ink-900 dark:group-hover:text-white" x-text="ex.label"></span><span class="text-[9px] font-mono text-ink-300 dark:text-ink-600" x-text="ex.tag"></span></button>
+          </template>
+        </div>
+        <form @submit.prevent="sendMessage()" class="flex gap-2.5">
+          <div class="flex-1 relative group">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400 group-focus-within:text-brand-500 transition pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+            <input x-model="inputText" :disabled="loading" type="text" placeholder="Describe a patent claim, invention, or natural-language query…" class="w-full pl-11 pr-24 py-3.5 bg-ink-50 dark:bg-ink-900 border border-ink-200 dark:border-ink-800 rounded-xl text-[14px] text-ink-900 dark:text-white placeholder:text-ink-400 focus:outline-none focus:ring-4 focus:ring-brand-500/15 focus:border-brand-400 dark:focus:border-brand-600 focus:bg-white dark:focus:bg-ink-950 transition disabled:opacity-50">
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-1 pointer-events-none" x-show="inputText.trim() && !loading"><kbd class="text-[10px] font-mono font-semibold text-ink-400 bg-white dark:bg-ink-800 border border-ink-200 dark:border-ink-700 rounded px-1.5 py-0.5">↵</kbd><span class="text-[10px] text-ink-400">to send</span></div>
+          </div>
+          <button type="submit" :disabled="loading || !inputText.trim()" class="lift relative px-6 py-3.5 bg-gradient-to-br from-brand-500 to-brand-600 text-white font-semibold rounded-xl hover:from-brand-600 hover:to-brand-700 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:from-ink-400 disabled:to-ink-400 flex items-center gap-2 shadow-lift text-[14px] focus-ring"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg><span>Search</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <aside x-show="pipelineOpen" x-transition.opacity class="hidden lg:flex flex-col w-80 border-l border-ink-200/70 dark:border-ink-800/60 bg-ink-50/50 dark:bg-ink-950/50 overflow-hidden">
+    <div class="px-5 py-3 border-b border-ink-200/70 dark:border-ink-800/60 flex items-center justify-between">
+      <div class="flex items-center gap-2"><span class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-ink-700 dark:text-ink-300">Pipeline Trace</span><span class="chip-mono">live</span></div>
+      <button @click="pipelineOpen = false" class="text-ink-400 hover:text-ink-700 dark:hover:text-white transition" title="Close"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto scrollbar p-5 space-y-4">
+      <div class="space-y-2">
+        <template x-for="(s, si) in pipeline" :key="'tr'+si">
+          <div :class="{'stage-active': loading && si === loadingStageIdx,'stage-done': (loading && si < loadingStageIdx) || (!loading && lastTrace.stagesDone > si)}" class="relative flex items-start gap-3 p-3 rounded-xl border border-ink-200/70 dark:border-ink-800/70 bg-white dark:bg-ink-900 transition">
+            <div class="flex flex-col items-center flex-shrink-0">
+              <div :class="{'bg-gradient-to-br from-brand-500 to-violet-500 text-white animate-pulse-soft': loading && si === loadingStageIdx,'bg-emerald-500 text-white': (loading && si < loadingStageIdx) || (!loading && lastTrace.stagesDone > si),'bg-ink-100 dark:bg-ink-800 text-ink-400': !((loading && si <= loadingStageIdx) || (!loading && lastTrace.stagesDone > si))}" class="w-6 h-6 rounded-full flex items-center justify-center font-mono text-[10px] font-bold transition">
+                <template x-if="(loading && si < loadingStageIdx) || (!loading && lastTrace.stagesDone > si)"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg></template>
+                <template x-if="!((loading && si < loadingStageIdx) || (!loading && lastTrace.stagesDone > si))"><span x-text="si+1"></span></template>
+              </div>
+              <template x-if="si < pipeline.length-1"><div :class="(loading && si < loadingStageIdx) || (!loading && lastTrace.stagesDone > si+1) ? 'bg-emerald-300 dark:bg-emerald-700' : 'bg-ink-200 dark:bg-ink-800'" class="w-0.5 h-3 mt-1"></div></template>
+            </div>
+            <div class="flex-1 min-w-0"><div class="font-display text-[12px] font-bold tracking-tight text-ink-900 dark:text-white" x-text="s.title"></div><div class="text-[11px] text-ink-500 dark:text-ink-400 mt-0.5 leading-snug" x-text="s.desc"></div></div>
+          </div>
+        </template>
+      </div>
+      <template x-if="lastTrace.has">
+        <div class="space-y-2 pt-2 border-t border-ink-200/70 dark:border-ink-800/70">
+          <div class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-ink-500 dark:text-ink-400 mb-1">Last run</div>
+          <template x-if="lastTrace.plan"><div class="rounded-lg border border-ink-200/70 dark:border-ink-800/70 bg-white dark:bg-ink-900 p-3"><div class="font-mono text-[10px] tracking-wider uppercase text-amber-600 dark:text-amber-400 font-bold mb-1">Planner</div><div class="text-[11px] text-ink-700 dark:text-ink-300"><span class="font-mono font-bold" x-text="lastTrace.plan.intent"></span><span class="text-ink-400 mx-1">→</span><span class="font-mono" x-text="lastTrace.plan.action"></span></div><div class="text-[10.5px] text-ink-500 dark:text-ink-400 mt-1 leading-snug" x-text="lastTrace.plan.reason"></div></div></template>
+          <div class="grid grid-cols-2 gap-2"><div class="rounded-lg border border-ink-200/70 dark:border-ink-800/70 bg-white dark:bg-ink-900 p-3"><div class="font-mono text-[10px] tracking-wider uppercase text-brand-600 dark:text-brand-400 font-bold">Patents</div><div class="font-display text-xl font-bold mt-0.5" x-text="lastTrace.rankedCount"></div></div><div class="rounded-lg border border-ink-200/70 dark:border-ink-800/70 bg-white dark:bg-ink-900 p-3"><div class="font-mono text-[10px] tracking-wider uppercase text-emerald-600 dark:text-emerald-400 font-bold">Evidence</div><div class="font-display text-xl font-bold mt-0.5" x-text="lastTrace.snippetCount"></div></div></div>
+          <template x-if="lastTrace.topScore !== null"><div class="rounded-lg border border-ink-200/70 dark:border-ink-800/70 bg-white dark:bg-ink-900 p-3"><div class="flex items-center justify-between mb-1"><div class="font-mono text-[10px] tracking-wider uppercase text-violet-600 dark:text-violet-400 font-bold">Top rerank score</div><div class="font-mono text-[11px] font-bold" x-text="lastTrace.topScore?.toFixed(3)"></div></div><div class="h-1.5 bg-ink-100 dark:bg-ink-800 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-brand-500 to-violet-500 rounded-full transition-all" :style="'width:'+(Math.min(100, Math.abs(lastTrace.topScore)*100))+'%'"></div></div></div></template>
+          <template x-if="lastTrace.verification"><div :class="{'border-emerald-300 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20': lastTrace.verification.status==='supported','border-amber-300 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/20': lastTrace.verification.status==='partially_supported','border-rose-300 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-950/20': lastTrace.verification.status==='unsupported'}" class="rounded-lg border p-3"><div :class="{'text-emerald-700 dark:text-emerald-400': lastTrace.verification.status==='supported','text-amber-700 dark:text-amber-400': lastTrace.verification.status==='partially_supported','text-rose-700 dark:text-rose-400': lastTrace.verification.status==='unsupported'}" class="font-mono text-[10px] tracking-wider uppercase font-bold mb-1">Verification</div><div class="text-[11px] font-mono font-bold" x-text="lastTrace.verification.status"></div><div class="text-[10.5px] text-ink-500 dark:text-ink-400 mt-1 leading-snug line-clamp-3" x-text="lastTrace.verification.reason"></div></div></template>
+        </div>
+      </template>
+      <template x-if="!lastTrace.has && !loading"><div class="text-center py-8 text-[11px] text-ink-400 dark:text-ink-500 font-mono leading-relaxed">Trace shows live as the agent runs.<br/>Send a query to begin.</div></template>
+    </div>
+  </aside>
+</main>
+</template>
+
+<template x-if="page==='benchmark'">
+<main class="min-h-[calc(100vh-4rem)] mesh-light dark:mesh-dark">
+  <div class="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-14">
+    <div class="mb-10"><span class="font-mono text-[11px] tracking-[0.2em] uppercase text-brand-600 dark:text-brand-400 font-semibold">Validation</span><h1 class="font-display text-3xl md:text-5xl font-bold mt-2 tracking-tight">Benchmark Evaluation</h1><p class="mt-3 text-ink-500 dark:text-ink-400 max-w-2xl leading-relaxed">PANORAMA <span class="chip-mono">PAR4PC</span> — each case has a target claim and 8 candidate prior-art patents (A–H) with gold answers.</p></div>
+
+    <div class="grid sm:grid-cols-4 gap-3 mb-6">
+      <template x-for="(m, mi) in benchmarkMetrics" :key="mi">
+        <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 p-5 shadow-soft lift relative overflow-hidden">
+          <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-brand-500 to-violet-500"></div>
+          <div class="flex items-center justify-between mb-2"><span class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-ink-500 dark:text-ink-400" x-text="m.label"></span><span class="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-emerald-600 dark:text-emerald-400"><svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 17a.75.75 0 01-.75-.75V5.612L5.29 9.77a.75.75 0 01-1.08-1.04l5.5-5.75a.75.75 0 011.08 0l5.5 5.75a.75.75 0 11-1.08 1.04l-3.96-4.158V16.25A.75.75 0 0110 17z" clip-rule="evenodd"/></svg><span x-text="m.deltaPct"></span></span></div>
+          <div class="flex items-baseline gap-3"><div class="font-display text-3xl font-bold text-brand-700 dark:text-brand-300" x-text="m.ours.toFixed(3)"></div><div class="text-[11px] font-mono text-ink-400">vs <span class="line-through" x-text="m.baseline.toFixed(3)"></span></div></div>
+          <div class="mt-3 h-1.5 rounded-full bg-ink-100 dark:bg-ink-800 overflow-hidden"><div class="h-full bg-gradient-to-r from-brand-500 to-violet-500 rounded-full transition-all duration-1000" :style="'width:'+(m.ours*100)+'%'"></div></div>
+        </div>
+      </template>
+    </div>
+
+    <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950 p-6 shadow-soft mb-8 overflow-hidden relative">
+      <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-brand-500/8 blur-3xl pointer-events-none"></div>
+      <div class="relative">
+        <div class="flex items-center justify-between gap-4 mb-5">
+          <div><span class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-brand-600 dark:text-brand-400">Head-to-head</span><h3 class="font-display text-xl font-bold mt-1 tracking-tight">Baseline vs ours, all metrics</h3><p class="text-[12px] text-ink-500 dark:text-ink-400 mt-1">PANORAMA PAR4PC validation, 100 cases</p></div>
+          <div class="flex items-center gap-3 text-[11px] font-mono"><div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-ink-300 dark:bg-ink-700"></span>Baseline</div><div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-gradient-to-br from-brand-500 to-violet-500"></span>Ours</div></div>
+        </div>
+        <div class="space-y-4">
+          <template x-for="(m, mi) in benchmarkMetrics" :key="'bar'+mi">
+            <div>
+              <div class="flex items-center justify-between mb-1.5"><span class="font-mono text-[11px] tracking-wider uppercase font-bold text-ink-700 dark:text-ink-300" x-text="m.label"></span><span class="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold" x-text="m.deltaPct + ' improvement'"></span></div>
+              <div class="space-y-1">
+                <div class="flex items-center gap-2"><span class="w-16 text-[10px] font-mono text-ink-500">baseline</span><div class="flex-1 h-5 bg-ink-100 dark:bg-ink-800/60 rounded-md overflow-hidden relative"><div class="absolute inset-y-0 left-0 bg-gradient-to-r from-ink-400 to-ink-300 dark:from-ink-600 dark:to-ink-700 rounded-md transition-all duration-1000 ease-out" :style="'width:'+(m.baseline*100)+'%'"></div></div><span class="w-12 text-right font-mono text-[11px] font-bold text-ink-600 dark:text-ink-400" x-text="m.baseline.toFixed(3)"></span></div>
+                <div class="flex items-center gap-2"><span class="w-16 text-[10px] font-mono text-brand-600 dark:text-brand-400 font-bold">ours</span><div class="flex-1 h-5 bg-ink-100 dark:bg-ink-800/60 rounded-md overflow-hidden relative"><div class="absolute inset-y-0 left-0 bg-gradient-to-r from-brand-500 to-violet-500 rounded-md shadow-glow transition-all duration-1000 ease-out" :style="'width:'+(m.ours*100)+'%; transition-delay:'+(mi*120+200)+'ms'"></div></div><span class="w-12 text-right font-mono text-[11px] font-bold text-brand-700 dark:text-brand-300" x-text="m.ours.toFixed(3)"></span></div>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="mt-5 pt-4 border-t border-ink-100 dark:border-ink-800 flex items-center justify-between text-[11px] font-mono text-ink-500 dark:text-ink-400"><div>Trained on 200 rows · features: <span class="chip-mono">dense</span> <span class="chip-mono">bm25</span> <span class="chip-mono">field-lexical</span></div><div>Avg lift: <span class="text-emerald-600 dark:text-emerald-400 font-bold">+5.5%</span></div></div>
+      </div>
+    </div>
+
+    <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950 p-6 shadow-soft mb-6">
+      <div class="flex items-center gap-2 mb-4"><span class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-brand-600 dark:text-brand-400">Run a case</span><div class="flex-1 h-px bg-ink-200/60 dark:bg-ink-800/60"></div></div>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div class="md:col-span-2"><label class="block font-mono text-[10px] tracking-wider uppercase font-semibold text-ink-500 dark:text-ink-400 mb-1.5">Case</label><select x-model="bmCasePath" class="w-full px-3 py-2.5 rounded-xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-[13px] font-mono focus:outline-none focus:ring-4 focus:ring-brand-500/15 focus:border-brand-400 transition"><option value="">— select a case —</option><template x-for="c in bmCases" :key="c.path"><option :value="c.path" x-text="c.name"></option></template></select></div>
+        <div><label class="block font-mono text-[10px] tracking-wider uppercase font-semibold text-ink-500 dark:text-ink-400 mb-1.5">Method</label><select x-model="bmMethod" class="w-full px-3 py-2.5 rounded-xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-[13px] font-mono focus:outline-none focus:ring-4 focus:ring-brand-500/15 focus:border-brand-400 transition"><option value="local-embedding">PatentSBERTa baseline</option><option value="linear-patent-reranker">Linear patent reranker (ours)</option><option value="bm25">BM25</option><option value="patent-specialized">Patent-specialized</option><option value="hybrid-coverage">Hybrid coverage</option><option value="local-cross-encoder">Cross-encoder</option></select></div>
+      </div>
+      <div class="mt-4 flex items-center justify-between gap-3"><div class="text-[11px] font-mono text-ink-500 dark:text-ink-400">Top-K: <span class="font-bold" x-text="topK"></span> · <span x-text="bmCases.length"></span> cases loaded</div><button @click="runBenchmark()" :disabled="!bmCasePath || bmLoading" class="lift inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-br from-brand-500 to-brand-600 text-white font-semibold rounded-xl hover:from-brand-600 hover:to-brand-700 transition disabled:opacity-40 disabled:cursor-not-allowed disabled:from-ink-400 disabled:to-ink-400 text-[13px] shadow-lift focus-ring"><template x-if="!bmLoading"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z"/></svg></template><template x-if="bmLoading"><svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0110 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></template><span x-text="bmLoading ? 'Running…' : 'Run benchmark'"></span></button></div>
+    </div>
+
+    <template x-if="bmError"><div class="rounded-xl border border-rose-300 dark:border-rose-800 bg-rose-50 dark:bg-rose-950/30 px-4 py-3 text-[12px] text-rose-700 dark:text-rose-400 font-mono mb-6" x-text="bmError"></div></template>
+
+    <template x-if="bmResult">
+      <div class="space-y-4 animate-fade-in">
+        <div class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950 p-5 shadow-soft">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4"><div><div class="font-mono text-[11px] tracking-wider uppercase text-ink-500 dark:text-ink-400">Application</div><div class="font-display text-lg font-bold mt-0.5" x-text="bmResult.application_number + ' · claim ' + bmResult.claim_number"></div></div><button @click="downloadReport()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900 text-ink-700 dark:text-ink-300 text-[12px] font-mono font-semibold hover:border-brand-300 dark:hover:border-brand-700 transition focus-ring"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>Download report</button></div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5"><div class="rounded-lg border border-ink-200 dark:border-ink-800 bg-ink-50/40 dark:bg-ink-900/40 p-3"><div class="font-mono text-[10px] uppercase tracking-wider text-ink-400">Hit@1</div><div class="font-display text-2xl font-bold mt-1" :class="bmResult.metrics.hit_at_1 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'" x-text="bmResult.metrics.hit_at_1 ? 'YES' : 'no'"></div></div><div class="rounded-lg border border-ink-200 dark:border-ink-800 bg-ink-50/40 dark:bg-ink-900/40 p-3"><div class="font-mono text-[10px] uppercase tracking-wider text-ink-400" x-text="'Hit@'+topK"></div><div class="font-display text-2xl font-bold mt-1" :class="bmResult.metrics.hit_at_k ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-500'" x-text="bmResult.metrics.hit_at_k ? 'YES' : 'no'"></div></div><div class="rounded-lg border border-ink-200 dark:border-ink-800 bg-ink-50/40 dark:bg-ink-900/40 p-3"><div class="font-mono text-[10px] uppercase tracking-wider text-ink-400" x-text="'Recall@'+topK"></div><div class="font-display text-2xl font-bold mt-1 text-brand-700 dark:text-brand-300" x-text="bmResult.metrics.recall_at_k.toFixed(2)"></div></div><div class="rounded-lg border border-ink-200 dark:border-ink-800 bg-ink-50/40 dark:bg-ink-900/40 p-3"><div class="font-mono text-[10px] uppercase tracking-wider text-ink-400">Gold</div><div class="font-mono text-sm font-bold mt-1.5 truncate" x-text="bmResult.gold_answers.join(', ')"></div></div></div>
+          <div class="mt-5 pt-5 border-t border-ink-100 dark:border-ink-800 grid md:grid-cols-2 gap-5">
+            <div><div class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-ink-500 dark:text-ink-400 mb-2.5">Score distribution</div><div class="space-y-1.5"><template x-for="r in [...bmResult.ranked].sort((a,b)=>a.letter.localeCompare(b.letter))" :key="'sd'+r.letter"><div class="flex items-center gap-2"><span :class="bmResult.gold_answers.includes(r.letter) ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-ink-500'" class="w-5 font-mono text-[11px] font-bold" x-text="r.letter"></span><div class="flex-1 h-3 bg-ink-100 dark:bg-ink-800/60 rounded-md overflow-hidden"><div :class="bmResult.gold_answers.includes(r.letter) ? 'bg-gradient-to-r from-emerald-500 to-teal-400' : 'bg-gradient-to-r from-brand-500 to-violet-500'" class="h-full rounded-md transition-all duration-700 ease-out" :style="'width:'+Math.min(100, Math.abs(r.score)*100)+'%'"></div></div><span class="w-12 text-right font-mono text-[10px] font-bold text-ink-700 dark:text-ink-300" x-text="r.score.toFixed(3)"></span></div></template></div></div>
+            <div><div class="font-mono text-[10px] tracking-[0.18em] uppercase font-bold text-ink-500 dark:text-ink-400 mb-2.5">Candidate map (rank · gold)</div><div class="grid grid-cols-4 gap-1.5"><template x-for="letter in ['A','B','C','D','E','F','G','H']" :key="'g'+letter"><div :class="{'border-emerald-400 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 ring-2 ring-emerald-400/30': bmResult.gold_answers.includes(letter),'border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900': !bmResult.gold_answers.includes(letter)}" class="aspect-square rounded-lg border flex flex-col items-center justify-center transition relative overflow-hidden"><template x-if="bmResult.gold_answers.includes(letter)"><div class="absolute top-1 right-1.5 text-[10px]">★</div></template><div class="font-display text-2xl font-bold" :class="bmResult.gold_answers.includes(letter) ? 'text-emerald-700 dark:text-emerald-300' : 'text-ink-700 dark:text-ink-300'" x-text="letter"></div><div class="font-mono text-[9px] text-ink-500 mt-0.5"><template x-if="bmResult.ranked.find(r=>r.letter===letter)"><span x-text="'#'+bmResult.ranked.find(r=>r.letter===letter).rank"></span></template><template x-if="!bmResult.ranked.find(r=>r.letter===letter)">—</template></div></div></template></div><div class="mt-2 flex items-center gap-3 text-[10px] font-mono text-ink-500"><div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-emerald-400"></span>gold</div><div class="flex items-center gap-1"><span class="w-2 h-2 rounded-sm bg-ink-300 dark:bg-ink-700"></span>candidate</div></div></div>
+          </div>
+        </div>
+
+        <div x-data="{tab:'ranked'}" class="rounded-2xl border border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-950 shadow-soft overflow-hidden">
+          <div class="border-b border-ink-200/70 dark:border-ink-800/70 px-5 pt-3"><div class="flex items-center gap-1"><button @click="tab='ranked'" :class="tab==='ranked' ? 'border-brand-500 text-brand-700 dark:text-brand-300' : 'border-transparent text-ink-500 hover:text-ink-900 dark:hover:text-white'" class="px-3 py-2 text-[12px] font-mono font-semibold tracking-wider uppercase border-b-2 transition focus-ring">Ranked</button><button @click="tab='chart'" :class="tab==='chart' ? 'border-brand-500 text-brand-700 dark:text-brand-300' : 'border-transparent text-ink-500 hover:text-ink-900 dark:hover:text-white'" class="px-3 py-2 text-[12px] font-mono font-semibold tracking-wider uppercase border-b-2 transition focus-ring">Claim chart</button><button @click="tab='claim'" :class="tab==='claim' ? 'border-brand-500 text-brand-700 dark:text-brand-300' : 'border-transparent text-ink-500 hover:text-ink-900 dark:hover:text-white'" class="px-3 py-2 text-[12px] font-mono font-semibold tracking-wider uppercase border-b-2 transition focus-ring">Target claim</button></div></div>
+          <div x-show="tab==='ranked'" class="p-5 space-y-2"><template x-for="r in bmResult.ranked" :key="r.rank"><div :class="bmResult.gold_answers.includes(r.letter) ? 'border-emerald-300 dark:border-emerald-800 bg-emerald-50/40 dark:bg-emerald-950/20' : 'border-ink-200 dark:border-ink-800 bg-white dark:bg-ink-900'" class="flex items-start gap-3 p-3 rounded-lg border transition"><div class="font-display text-2xl font-bold text-brand-700 dark:text-brand-300 w-8 text-center" x-text="r.letter"></div><div class="flex-1 min-w-0"><div class="flex items-center gap-2"><span class="font-mono text-[12px] font-bold text-brand-700 dark:text-brand-300" x-text="r.patent_id"></span><template x-if="bmResult.gold_answers.includes(r.letter)"><span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400">★ Gold</span></template></div><div class="text-[12.5px] text-ink-700 dark:text-ink-300 mt-0.5 line-clamp-2 leading-snug" x-text="r.title"></div></div><div class="text-right font-mono"><div class="text-[10px] text-ink-400 uppercase tracking-wider">rank</div><div class="text-[12px] font-bold" x-text="'#'+r.rank"></div></div><div class="text-right font-mono"><div class="text-[10px] text-ink-400 uppercase tracking-wider">score</div><div class="text-[12px] font-bold" x-text="r.score.toFixed(3)"></div></div></div></template></div>
+          <div x-show="tab==='chart'" class="p-5 overflow-x-auto"><table class="w-full text-[12px]"><thead><tr class="border-b border-ink-200 dark:border-ink-800"><th class="text-left font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold py-2 px-2">Limitation</th><th class="text-left font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold py-2 px-2">Candidate</th><th class="text-left font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold py-2 px-2">Source</th><th class="text-right font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold py-2 px-2">Score</th><th class="text-left font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold py-2 px-2">Verification</th><th class="text-left font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold py-2 px-2">Evidence</th></tr></thead><tbody><template x-for="(row, ri) in bmResult.chart" :key="ri"><tr class="border-b border-ink-100 dark:border-ink-900/60 align-top"><td class="py-2 px-2 font-mono font-bold text-ink-700 dark:text-ink-300" x-text="row.limitation"></td><td class="py-2 px-2 font-mono text-ink-600 dark:text-ink-400" x-text="row.candidate"></td><td class="py-2 px-2 font-mono text-ink-500" x-text="row.source"></td><td class="py-2 px-2 text-right font-mono font-bold" x-text="row.score.toFixed(2)"></td><td class="py-2 px-2"><span :class="{'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200/70 dark:border-emerald-900/50': row.verification==='supported','bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200/70 dark:border-amber-900/50': row.verification==='partially_supported','bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-400 border-rose-200/70 dark:border-rose-900/50': row.verification==='unsupported'}" class="inline-flex items-center px-1.5 py-0.5 rounded border text-[10px] font-mono font-bold uppercase" x-text="row.verification"></span></td><td class="py-2 px-2 max-w-md text-ink-600 dark:text-ink-400 line-clamp-2 leading-snug" x-text="row.evidence"></td></tr></template></tbody></table></div>
+          <div x-show="tab==='claim'" class="p-5"><div class="font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold mb-2">Target claim</div><div class="rounded-lg border border-ink-200 dark:border-ink-800 bg-ink-50/50 dark:bg-ink-900/50 p-4 text-[13px] leading-relaxed font-mono whitespace-pre-line" x-text="bmResult.target_claim"></div><div class="font-mono text-[10px] tracking-wider uppercase text-ink-500 dark:text-ink-400 font-bold mt-5 mb-2">Decomposed limitations</div><div class="space-y-1.5"><template x-for="l in bmResult.limitations" :key="l.label"><div class="flex items-start gap-2 p-2.5 rounded-lg border border-ink-200/70 dark:border-ink-800/70 bg-white dark:bg-ink-900"><span class="font-mono text-[11px] font-bold text-brand-700 dark:text-brand-300 flex-shrink-0" x-text="l.label"></span><span class="text-[12.5px] text-ink-700 dark:text-ink-300 leading-relaxed" x-text="l.text"></span></div></template></div></div>
+        </div>
+      </div>
+    </template>
+
+    <template x-if="!bmResult && !bmLoading && !bmError"><div class="text-center py-14 text-ink-400 dark:text-ink-500 font-mono text-sm">Pick a case and method, then click <span class="chip-mono">Run benchmark</span>.</div></template>
+  </div>
+
+  <footer class="border-t border-ink-200/70 dark:border-ink-800/60 bg-white/70 dark:bg-ink-950/70 glass-light py-6 mt-10"><div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-2 text-[11px] font-mono text-ink-500 dark:text-ink-400"><div>Patent Prior-Art Agent · PANORAMA PAR4PC · PatentSBERTa</div><div>FAISS · GPT-4o-mini · LangChain</div></div></footer>
+</main>
+</template>
+
+<script>
+function initPlexus(rootEl) {
+  const canvas = rootEl.querySelector('#plexus-canvas');
+  if (!canvas || canvas._plexusBooted) return;
+  canvas._plexusBooted = true;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  let W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let particles = [];
+  let mouse = { x: -9999, y: -9999, active: false };
+  let rafId = null;
+  const DENSITY = 0.000085, MIN_PARTICLES = 60, MAX_PARTICLES = 140;
+  const MAX_DIST = 140, MOUSE_RADIUS = 180, SPEED = 0.25;
+
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    if (W < 10 || H < 10) { setTimeout(resize, 80); return; }
+    canvas.width = Math.floor(W * dpr); canvas.height = Math.floor(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const target = Math.max(MIN_PARTICLES, Math.min(MAX_PARTICLES, Math.round(W * H * DENSITY)));
+    if (particles.length === 0) {
+      for (let i = 0; i < target; i++) particles.push({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-0.5)*SPEED*2, vy: (Math.random()-0.5)*SPEED*2, r: Math.random()*1.4+0.6 });
+    }
+  }
+  function step() {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of particles) {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+      if (mouse.active) { const dx = mouse.x - p.x, dy = mouse.y - p.y, d = Math.hypot(dx, dy); if (d < MOUSE_RADIUS && d > 0.1) { const f = (1-d/MOUSE_RADIUS)*0.6; p.x += (dx/d)*f; p.y += (dy/d)*f; } }
+    }
+    for (let i = 0; i < particles.length; i++) {
+      const a = particles[i];
+      for (let j = i+1; j < particles.length; j++) {
+        const b = particles[j];
+        const dx = a.x-b.x, dy = a.y-b.y, d2 = dx*dx+dy*dy;
+        if (d2 < MAX_DIST*MAX_DIST) {
+          const d = Math.sqrt(d2), alpha = (1-d/MAX_DIST)*0.55;
+          ctx.strokeStyle = `rgba(167, 139, 250, ${alpha})`;
+          ctx.lineWidth = 0.6;
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+    }
+    if (mouse.active) {
+      for (const p of particles) {
+        const dx = mouse.x-p.x, dy = mouse.y-p.y, d2 = dx*dx+dy*dy;
+        if (d2 < MOUSE_RADIUS*MOUSE_RADIUS) {
+          const d = Math.sqrt(d2), alpha = (1-d/MOUSE_RADIUS)*0.75;
+          ctx.strokeStyle = `rgba(216, 180, 254, ${alpha})`;
+          ctx.lineWidth = 0.9;
+          ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+        }
+      }
+    }
+    for (const p of particles) { ctx.fillStyle = 'rgba(221, 214, 254, 0.9)'; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); }
+    rafId = requestAnimationFrame(step);
+  }
+  function start() { if (!rafId) step(); }
+  function stop()  { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+  rootEl.addEventListener('mousemove', e => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; mouse.active = true; });
+  rootEl.addEventListener('mouseleave', () => { mouse.active = false; });
+  const io = new IntersectionObserver(es => es.forEach(en => en.isIntersecting ? start() : stop()));
+  io.observe(canvas);
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+  window.addEventListener('resize', resize);
+  resize(); start();
+}
+
+function counter(target, duration) {
+  return {
+    value: 0,
+    init() {
+      const start = performance.now();
+      const ease = t => 1 - Math.pow(1 - t, 3);
+      const tick = (now) => { const t = Math.min(1, (now - start) / duration); this.value = target * ease(t); if (t < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    },
+  };
+}
+
+function app() {
+  return {
+    page: 'landing',
+    dark: false,
+    status: { index_exists: false, patent_count: 0, embedding_model: '', openai_available: false },
+    searchMode: 'optimized',
+    topK: 3,
+    useLLM: true,
+    inputText: '',
+    loading: false,
+    loadingStageIdx: 0,
+    loadingStage: 'Initializing',
+    _loadingTimer: null,
+    messages: [],
+    sessionId: '',
+    lastComparison: null,
+    pipelineOpen: true,
+    lastTrace: { has: false, stagesDone: 0, plan: null, rankedCount: 0, snippetCount: 0, topScore: null, verification: null },
+    bmCases: [],
+    bmCasePath: '',
+    bmMethod: 'linear-patent-reranker',
+    bmLoading: false,
+    bmResult: null,
+    bmError: '',
+
+    benchmarkMetrics: [
+      { label: 'Hit@1',    baseline: 0.590, ours: 0.600, deltaPct: '+1.7%' },
+      { label: 'Hit@3',    baseline: 0.860, ours: 0.910, deltaPct: '+5.8%' },
+      { label: 'Recall@3', baseline: 0.802, ours: 0.850, deltaPct: '+6.0%' },
+      { label: 'Exact',    baseline: 0.470, ours: 0.510, deltaPct: '+8.5%' },
+    ],
+
+    pipeline: [
+      { icon: '🔍', title: 'Vector Recall', desc: 'FAISS over 17.9K patents with PatentSBERTa', bar: 'from-blue-400 to-cyan-400' },
+      { icon: '📊', title: 'Smart Rerank',  desc: 'Linear reranker: dense + BM25 + field-lexical', bar: 'from-violet-400 to-purple-400' },
+      { icon: '🧠', title: 'Plan',          desc: 'Decide fresh search or reuse working set',     bar: 'from-amber-400 to-orange-400' },
+      { icon: '📋', title: 'Evidence',      desc: 'Extract supporting snippets from each patent', bar: 'from-emerald-400 to-teal-400' },
+      { icon: '💬', title: 'Ground',        desc: 'GPT-4o-mini generates an evidence-cited answer', bar: 'from-pink-400 to-rose-400' },
+      { icon: '✅', title: 'Verify',        desc: 'Check the answer is supported by patent text', bar: 'from-teal-400 to-emerald-400' },
+    ],
+
+    examples: [
+      { label: 'Vague Search', tag: 'Q2', group: 'Search', accent: 'bg-blue-500', chipClass: 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400', preview: 'Participant profiles and contextual information at physical gatherings', query: 'patents about participant profiles and contextual information at physical gatherings' },
+      { label: 'Claim-style', tag: 'Q14', group: 'Search', accent: 'bg-indigo-500', chipClass: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400', preview: 'Specific dual-feature search: profile generation + contextual info requests', query: 'patents about participant profile generation and contextual information requests at physical gatherings' },
+      { label: 'Similar Patent', tag: 'Q11', group: 'Search', accent: 'bg-violet-500', chipClass: 'bg-violet-50 text-violet-700 dark:bg-violet-950/40 dark:text-violet-400', preview: 'Find patents similar to a system presenting info from multiple data sources to event participants', query: 'find patents similar to systems and methods for presenting information extracted from one or more data sources to event participants' },
+      { label: 'Follow-up', tag: 'Q3', group: 'Multi-turn', accent: 'bg-fuchsia-500', chipClass: 'bg-fuchsia-50 text-fuchsia-700 dark:bg-fuchsia-950/40 dark:text-fuchsia-400', preview: 'Which of those explicitly generates a profile for each participant at a physical gathering?', query: 'Which of those explicitly generates a profile for each participant at a physical gathering?' },
+      { label: 'Comparison', tag: 'Q12', group: 'Multi-turn', accent: 'bg-pink-500', chipClass: 'bg-pink-50 text-pink-700 dark:bg-pink-950/40 dark:text-pink-400', preview: 'Compare the top two patents on profile generation and contextual delivery — evidence-based', query: 'Compare only the top two retrieved patents. For each patent, say whether the evidence supports participant profile generation and contextual information delivery. Then state which patent is stronger on each dimension. Use only the retrieved patents.' },
+      { label: 'Combination', tag: 'Q17', group: 'Multi-turn', accent: 'bg-emerald-500', chipClass: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400', preview: 'Combine invitation handling with attendee customization — single patent or split?', query: 'Using only the retrieved patents, if I combine invitation handling with attendee customization, does one retrieved patent clearly cover both features? If not, name the best patent for invitation handling and the best patent for attendee customization.' },
+      { label: 'Out-of-domain', tag: 'Q20', group: 'Stress test', accent: 'bg-amber-500', chipClass: 'bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400', preview: 'CRISPR/LNP/IRD biotech landscape — should trigger insufficiency admission', query: 'Walk me through the patent landscape for non-viral in vivo CRISPR adenine and prime editing delivered by ionizable lipid nanoparticles for allele-specific inherited retinal degeneration. Organize the answer under separate headings for pegRNA architecture, pegRNA stabilization, deaminase engineering, PAM-relaxed Cas variants, tissue-specific promoter choice, photoreceptor targeting, Muller glia targeting, intravitreal dosing, subretinal dosing, repeat dosing, biodistribution modeling, bystander edit control, immune evasion, manufacturing release assays, CMC scale-up, orphan-drug exclusivity, partnering strategy, reimbursement strategy, and freedom-to-operate outlook, and if evidence is missing for a heading, say that directly.' },
+    ],
+
+    get exampleGroups() { const groups = {}; this.examples.forEach(ex => { (groups[ex.group] = groups[ex.group] || []).push(ex); }); return Object.keys(groups).map(name => ({ name, items: groups[name] })); },
+
+    formatCount(n) { if (!n) return '—'; if (n >= 1000) return (n/1000).toFixed(1).replace(/\.0$/,'') + 'K patents'; return n + ' patents'; },
+
+    async init() {
+      try {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) this.dark = true;
+        const saved = localStorage.getItem('pa-theme');
+        if (saved === 'dark') this.dark = true;
+        if (saved === 'light') this.dark = false;
+      } catch(e) {}
+      this.$watch && this.$watch('dark', v => { try { localStorage.setItem('pa-theme', v ? 'dark' : 'light'); } catch(e){} });
+      this.sessionId = crypto.randomUUID();
+      try { const r = await fetch('/api/health'); this.status = await r.json(); } catch(e){}
+      try { const r = await fetch('/api/benchmark/cases'); const d = await r.json(); this.bmCases = d.cases || []; } catch(e){}
+    },
+
+    resetChat() { this.messages = []; this.lastComparison = null; this.lastTrace = { has: false, stagesDone: 0, plan: null, rankedCount: 0, snippetCount: 0, topScore: null, verification: null }; this.sessionId = crypto.randomUUID(); },
+
+    switchMode(mode) { if (this.searchMode === mode) return; if (this.messages.length > 0 || this.loading) this.resetChat(); this.searchMode = mode; },
+
+    _startLoadingAnimation() {
+      this.loadingStageIdx = 0;
+      this.loadingStage = this.pipeline[0].title;
+      if (this._loadingTimer) clearInterval(this._loadingTimer);
+      this._loadingTimer = setInterval(() => { if (this.loadingStageIdx < this.pipeline.length - 1) { this.loadingStageIdx++; this.loadingStage = this.pipeline[this.loadingStageIdx].title; } }, 700);
+    },
+    _stopLoadingAnimation() { if (this._loadingTimer) { clearInterval(this._loadingTimer); this._loadingTimer = null; } },
+
+    _updateTrace(primary) { if (!primary) return; const top = primary.ranked && primary.ranked.length ? primary.ranked[0].score : null; this.lastTrace = { has: true, stagesDone: 6, plan: primary.plan || null, rankedCount: primary.ranked ? primary.ranked.length : 0, snippetCount: primary.snippets ? primary.snippets.length : 0, topScore: top, verification: primary.verification || null }; },
+
+    async sendMessage() {
+      const query = this.inputText.trim();
+      if (!query || this.loading) return;
+      this.inputText = '';
+      this.messages.push({ role: 'user', content: query });
+      this.loading = true;
+      this._startLoadingAnimation();
+      this.lastComparison = null;
+      this.$nextTick(() => { if (this.$refs.chatScroll) this.$refs.chatScroll.scrollTop = this.$refs.chatScroll.scrollHeight; });
+      try {
+        const res = await fetch('/api/search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query, variant: this.searchMode, top_k: this.topK, session_id: this.sessionId, use_llm_answer: this.useLLM, use_llm_planner: this.useLLM, use_llm_verification: this.useLLM }) });
+        if (!res.ok) { const errText = await res.text().catch(() => res.statusText); this.messages.push({ role: 'assistant', content: `Server error (${res.status}): ${errText}` }); return; }
+        const data = await res.json();
+        if (data.session_id) this.sessionId = data.session_id;
+        if (this.searchMode === 'comparison' && data.optimized && data.baseline) {
+          this.messages.push({ role: 'assistant', content: 'Side-by-side comparison of Baseline RAG vs Our Optimized Agent.', _comparison: { baseline: data.baseline, optimized: data.optimized }, _showRanked: false, _showEvidence: false });
+          this._updateTrace(data.optimized);
+        } else {
+          const primary = data.optimized || data.baseline;
+          if (primary) { this.messages.push({ role: 'assistant', content: primary.answer, data: primary, _showRanked: true, _showEvidence: false }); this._updateTrace(primary); }
+        }
+      } catch(e) { this.messages.push({ role: 'assistant', content: 'Error: Could not reach the server.' }); }
+      finally { this.loading = false; this._stopLoadingAnimation(); this.$nextTick(() => { if (this.$refs.chatScroll) this.$refs.chatScroll.scrollTop = this.$refs.chatScroll.scrollHeight; }); }
+    },
+
+    async runBenchmark() {
+      if (!this.bmCasePath || this.bmLoading) return;
+      this.bmLoading = true; this.bmResult = null; this.bmError = '';
+      try {
+        const res = await fetch('/api/benchmark/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ case_path: this.bmCasePath, method: this.bmMethod, top_k: this.topK }) });
+        if (!res.ok) { this.bmError = `Server error (${res.status}): ${await res.text().catch(()=>res.statusText)}`; return; }
+        this.bmResult = await res.json();
+      } catch(e) { this.bmError = 'Could not reach the server.'; }
+      finally { this.bmLoading = false; }
+    },
+
+    downloadReport() { if (!this.bmResult?.report) return; const blob = new Blob([this.bmResult.report], { type: 'text/markdown' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `patent_report_${this.bmResult.application_number || 'case'}.md`; a.click(); URL.revokeObjectURL(url); },
+  };
+}
+</script>
+</body>
+</html>

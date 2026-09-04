@@ -1,0 +1,25 @@
+category,system_name,score_groundedness,score_helpfulness,score_hallucination,score_context_reuse
+aspect_filter_follow_up,ChatGPT Auto,0.167,0.583,0.167,0.167
+aspect_filter_follow_up,Gemini Fast,0.0,0.5,0.0,0.0
+aspect_filter_follow_up,Our Agent,1.0,1.0,1.0,1.0
+aspect_filter_follow_up,RAG only,0.417,0.0,1.0,0.417
+combination_exploration,ChatGPT Auto,0.167,0.667,0.167,0.167
+combination_exploration,Gemini Fast,0.0,0.5,0.0,0.0
+combination_exploration,Our Agent,0.833,0.833,0.833,1.0
+combination_exploration,RAG only,0.333,0.0,1.0,0.333
+comparison_follow_up,ChatGPT Auto,0.75,1.0,0.75,0.75
+comparison_follow_up,Gemini Fast,0.25,0.5,0.0,0.25
+comparison_follow_up,Our Agent,0.75,0.75,0.75,0.75
+comparison_follow_up,RAG only,0.25,0.0,1.0,0.25
+out_of_domain_insufficiency,ChatGPT Auto,0.0,0.5,0.0,1.0
+out_of_domain_insufficiency,Gemini Fast,0.0,0.0,0.0,1.0
+out_of_domain_insufficiency,Our Agent,1.0,0.5,1.0,1.0
+out_of_domain_insufficiency,RAG only,0.0,0.0,0.0,1.0
+similar_patent_search,ChatGPT Auto,0.5,1.0,0.5,1.0
+similar_patent_search,Gemini Fast,0.5,1.0,0.5,1.0
+similar_patent_search,Our Agent,0.5,0.5,0.5,1.0
+similar_patent_search,RAG only,1.0,0.5,1.0,1.0
+vague_search,ChatGPT Auto,0.5,0.929,0.5,1.0
+vague_search,Gemini Fast,0.429,0.643,0.429,1.0
+vague_search,Our Agent,0.929,0.857,0.929,1.0
+vague_search,RAG only,0.786,0.5,1.0,1.0

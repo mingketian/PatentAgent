@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "Patent Prior-Art Agent: Structured Prior-Art Search and Evidence Synthesis via an LLM Agent with Tool Use"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - family-names: Wang
+    given-names: Jonathan
+    affiliation: Emory University
+  - family-names: Tian
+    given-names: Mingke
+    affiliation: Emory University
+  - family-names: Chen
+    given-names: Nicole
+    affiliation: Emory University
+  - family-names: Zou
+    given-names: Eric
+    affiliation: Emory University
+repository-code: "https://github.com/mingketian/PatentAgent"
+license: MIT
+keywords:
+  - patent retrieval
+  - prior art
+  - retrieval-augmented generation
+  - learning to rank
+  - PANORAMA
+  - PatentSBERTa

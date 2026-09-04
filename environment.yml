@@ -1,0 +1,24 @@
+name: patent-agent
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - datasets
+      - faiss-cpu
+      - huggingface_hub
+      - langchain
+      - langchain-openai
+      - langgraph
+      - numpy
+      - pandas
+      - pydantic
+      - pyarrow
+      - python-dotenv
+      - rank-bm25
+      - scikit-learn
+      - sentence-transformers
+      - streamlit
+      - torchvision
+      - tqdm

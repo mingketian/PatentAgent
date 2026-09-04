@@ -1,0 +1,15 @@
+{
+  "embedding_model": "AI-Growth-Lab/PatentSBERTa",
+  "feature_names": [
+    "dense_score",
+    "bm25_score",
+    "field_lexical_score"
+  ],
+  "solver": "liblinear",
+  "c_value": 4.0,
+  "class_weight": null,
+  "train_splits": [
+    "train"
+  ],
+  "max_rows_per_split": 200
+}
