@@ -9,6 +9,7 @@ help:
 	@echo "  make bench     full PAR4PC validation run, all three methods"
 	@echo "  make train     retrain the shipped linear reranker"
 	@echo "  make figures   regenerate results/tables and results/figures"
+	@echo "  make check     compile every module and verify result tables are fresh"
 	@echo "  make clean     remove caches and generated outputs"
 
 web:
@@ -35,3 +36,8 @@ figures:
 clean:
 	find . -name '__pycache__' -type d -prune -exec rm -rf {} +
 	rm -rf .pytest_cache .mypy_cache .ruff_cache outputs data/cache
+
+.PHONY: check
+check:
+	python -m compileall -q src tools app.py web/server.py
+	python tools/check_results_fresh.py

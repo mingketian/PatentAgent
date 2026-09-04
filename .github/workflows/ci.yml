@@ -55,16 +55,8 @@ jobs:
       - name: Install figure dependencies
         run: pip install --quiet matplotlib pandas openpyxl
 
-      - name: Regenerate tables and figures
-        run: |
-          python tools/make_results_tables.py
-          python tools/make_figures.py
+      - name: Check the committed result tables match the source data
+        run: python tools/check_results_fresh.py
 
-      - name: Check the committed results are up to date
-        run: |
-          if ! git diff --quiet -- results/tables; then
-            echo "::error::results/tables/ is stale. Run 'make figures' and commit."
-            git diff --stat -- results/tables
-            exit 1
-          fi
-          echo "Result tables match the source data."
+      - name: Render the figures
+        run: python tools/make_figures.py

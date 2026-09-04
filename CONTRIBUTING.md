@@ -50,7 +50,8 @@ python tools/make_figures.py
 ```
 
 Both are deterministic — commit the regenerated files alongside the change that moved the
-numbers.
+numbers. `make check` (also run in CI) compiles every module and verifies that the committed
+tables still match the underlying evaluation data.
 
 ## Style
 

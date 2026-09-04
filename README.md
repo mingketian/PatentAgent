@@ -215,8 +215,8 @@ PatentAgent/
 Regenerate the committed tables and figures after new runs:
 
 ```bash
-python tools/make_results_tables.py
-python tools/make_figures.py
+make figures   # rebuild results/tables and results/figures
+make check     # compile every module, verify the tables match the source data
 ```
 
 ---
